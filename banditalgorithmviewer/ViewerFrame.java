@@ -53,7 +53,7 @@ public class ViewerFrame extends JFrame implements ActionListener{
 		trialTime++;trialTime++;
 		double ucb1 = Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(0));
 		double ucb2 = Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(1));
-		
+
 		setTitle("Viewer");
 		setLayout(new GridLayout(1,2));
 		setSize(400, 400);
@@ -110,7 +110,7 @@ public class ViewerFrame extends JFrame implements ActionListener{
 			trialTime1.setText(Integer.toString(trialTimeList.get(0)));
 			double ucb = Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(0));
 			ucbLabel1.setText(Double.toString(ucb));
-			
+
 
 		}
 		else if(e.getActionCommand().equals("bandit2")) {
