@@ -135,7 +135,7 @@ public class TesterFrame extends JFrame implements ActionListener{
 		}
 
 		String testName = Integer.toString(num_of_trial) + "回　";
-		
+
 		//バンディットマシンの分布
 		double probs[] = DEFALT_PROBS;
 		if(!probField.getText().equals("")) {			
@@ -145,7 +145,7 @@ public class TesterFrame extends JFrame implements ActionListener{
 				probs[i] = Double.parseDouble(probString[i]);
 			}
 		}	
-		
+
 		//分布をラジオボタンから取得する
 		if(bernoulliButton.isSelected()) {
 			testName += "ベルヌーイ分布";
