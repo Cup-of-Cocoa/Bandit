@@ -35,8 +35,8 @@ public class TesterFrame extends JFrame implements ActionListener{
 
 	public TesterFrame() {
 		setTitle("Tester");
-		setLayout(new GridLayout(7,1));
-		setSize(350, 350);
+		setLayout(new GridLayout(8,1));
+		setSize(350, 400);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//×を押したらウィンドウを閉じる
 
@@ -105,9 +105,9 @@ public class TesterFrame extends JFrame implements ActionListener{
 		probField = new JTextField(50);
 		probField.setActionCommand("PROB");
 		probField.addActionListener(this);
-		dirNamePanel.add(dirNameLabel);
-		dirNamePanel.add(dirNameField);
-		add(dirNamePanel);
+		probPanel.add(probLabel);
+		probPanel.add(probField);
+		add(probPanel);
 
 
 		okButton = new JButton("OK");
