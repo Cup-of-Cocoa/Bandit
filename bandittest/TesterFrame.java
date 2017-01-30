@@ -23,12 +23,12 @@ public class TesterFrame extends JFrame implements ActionListener{
 
 	private static final long serialVersionUID = 1L;
 
-	JPanel distroPanel, agentPanel, trialPanel, dirNamePanel, statusPanel;
-	JLabel distroLabel, agentLabel, statusLabel, statusLabel1, statusLabel2, trialLabel, dirNameLabel;
+	JPanel distroPanel, algoPanel, trialPanel, dirNamePanel, statusPanel, probPanel;
+	JLabel distroLabel, algoLabel, statusLabel, statusLabel1, statusLabel2, trialLabel, dirNameLabel, probLabel;
 	JLabel spaceLabel = new JLabel("");
-	JTextField  trialField, dirNameField;
+	JTextField  trialField, dirNameField, probField;
 	JButton okButton;
-	ButtonGroup distroGroup, agentGroup;
+	ButtonGroup distroGroup, algoGroup;
 	JRadioButton bernoulliButton, gaussianButton, ucb1Button, vucbButton, epdButton;
 	final static double[] DEFALT_PROBS = {0.9, 0.6};
 
@@ -54,20 +54,20 @@ public class TesterFrame extends JFrame implements ActionListener{
 
 		add(distroPanel);
 
-		agentPanel = new JPanel();
-		agentLabel = new JLabel("Agent");
-		agentGroup = new ButtonGroup();
+		algoPanel = new JPanel();
+		algoLabel = new JLabel("Algorithm");
+		algoGroup = new ButtonGroup();
 		ucb1Button = new JRadioButton("UCB1", true);
 		vucbButton = new JRadioButton("VUCB");
 		epdButton = new JRadioButton("É√-Greedy");
-		agentGroup.add(ucb1Button);
-		agentGroup.add(vucbButton);
-		agentGroup.add(epdButton);
-		agentPanel.add(agentLabel);
-		agentPanel.add(ucb1Button);
-		agentPanel.add(vucbButton);
-		agentPanel.add(epdButton);
-		add(agentPanel);
+		algoGroup.add(ucb1Button);
+		algoGroup.add(vucbButton);
+		algoGroup.add(epdButton);
+		algoPanel.add(algoLabel);
+		algoPanel.add(ucb1Button);
+		algoPanel.add(vucbButton);
+		algoPanel.add(epdButton);
+		add(algoPanel);
 
 		add(spaceLabel);
 
@@ -90,15 +90,25 @@ public class TesterFrame extends JFrame implements ActionListener{
 		trialPanel.add(trialLabel);
 		trialPanel.add(trialField);
 		add(trialPanel);
-		
+
 		dirNamePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		dirNameLabel = new JLabel("Directory Name");
-		dirNameField = new JTextField(15);
+		dirNameField = new JTextField(30);
 		dirNameField.setActionCommand("DIRNAME");
 		dirNameField.addActionListener(this);
 		dirNamePanel.add(dirNameLabel);
 		dirNamePanel.add(dirNameField);
 		add(dirNamePanel);
+
+		probPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		probLabel = new JLabel("Mean of probability Bandits have");
+		probField = new JTextField(50);
+		probField.setActionCommand("PROB");
+		probField.addActionListener(this);
+		dirNamePanel.add(dirNameLabel);
+		dirNamePanel.add(dirNameField);
+		add(dirNamePanel);
+
 
 		okButton = new JButton("OK");
 		okButton.setActionCommand("OK");
@@ -172,7 +182,7 @@ public class TesterFrame extends JFrame implements ActionListener{
 		if (e.getActionCommand().equals("OK")) {
 			testSetting();
 		}
-		else if (e.getActionCommand().equals("TRIAL") || e.getActionCommand().equals("DIRNAME")) {
+		else if (e.getActionCommand().equals("PROB") || e.getActionCommand().equals("TRIAL") || e.getActionCommand().equals("DIRNAME")) {
 			testSetting();
 		}
 	}
