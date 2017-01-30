@@ -101,7 +101,7 @@ public class TesterFrame extends JFrame implements ActionListener{
 		add(dirNamePanel);
 
 		probPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		probLabel = new JLabel("Mean of probability Bandits have");
+		probLabel = new JLabel("Distribution of Bandits");
 		probField = new JTextField(50);
 		probField.setActionCommand("PROB");
 		probField.addActionListener(this);
@@ -135,7 +135,17 @@ public class TesterFrame extends JFrame implements ActionListener{
 		}
 
 		String testName = Integer.toString(num_of_trial) + "回　";
+		
+		//バンディットマシンの分布
 		double probs[] = DEFALT_PROBS;
+		if(!probField.getText().equals("")) {			
+			String probString[] = probField.getText().split(" ");
+			probs = new double[probString.length];
+			for(int i=0; i < probString.length; i++) {
+				probs[i] = Double.parseDouble(probString[i]);
+			}
+		}	
+		
 		//分布をラジオボタンから取得する
 		if(bernoulliButton.isSelected()) {
 			testName += "ベルヌーイ分布";
