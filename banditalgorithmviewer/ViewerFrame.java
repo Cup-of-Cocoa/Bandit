@@ -32,7 +32,7 @@ public class ViewerFrame extends JFrame implements ActionListener{
 	private static final long serialVersionUID = 1L;
 
 	JPanel banditPanel1, banditPanel2;
-	JLabel reg, tr, banditLabel1, banditLabel2, resultLabel1, resultLabel2, ucbLabel1, ucbLabel2, regretLabel1, regretLabel2;
+	JLabel tr, banditLabel1, banditLabel2, resultLabel1, resultLabel2, ucbLabel1, ucbLabel2, regretLabel1, regretLabel2;
 	JLabel trialTime1, trialTime2, rewardMean1, rewardMean2;
 	JButton banditButton1, banditButton2;
 
@@ -46,17 +46,22 @@ public class ViewerFrame extends JFrame implements ActionListener{
 
 
 	public ViewerFrame() {
+		rewardMeanList.add(0.0);
+		rewardMeanList.add(0.0);
+		trialTimeList.add(0);
+		trialTimeList.add(0);
+		/*double reward1 = bandit1.play();
 		rewardMeanList.add(bandit1.play());
 		rewardMeanList.add(bandit2.play());
 		trialTimeList.add(1);
 		trialTimeList.add(1);
 		trialTime++;trialTime++;
 		double ucb1 = Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(0));
-		double ucb2 = Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(1));
+		double ucb2 = Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(1));*/
 
 		setTitle("Viewer");
 		setLayout(new GridLayout(1,2));
-		setSize(400, 400);
+		setSize(500, 500);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//×を押したらウィンドウを閉じる
 
@@ -69,14 +74,14 @@ public class ViewerFrame extends JFrame implements ActionListener{
 		banditPanel1.add(banditButton1);
 		resultLabel1 = new JLabel("");
 		banditPanel1.add(resultLabel1);
-		ucbLabel1 = new JLabel("UCB: " + ucb1);
+		ucbLabel1 = new JLabel("UCB: ");
 		banditPanel1.add(ucbLabel1);
+		rewardMean1 = new JLabel("Reward: ");
+		banditPanel1.add(rewardMean1);
+		trialTime1 = new JLabel("Trial1" + Integer.toString(trialTimeList.get(0)));
+		banditPanel1.add(trialTime1);
 		regretLabel1 = new JLabel("Regret: ");
 		banditPanel1.add(regretLabel1);
-		trialTime1 = new JLabel(Integer.toString(trialTimeList.get(0)));
-		banditPanel1.add(trialTime1);
-		reg = new JLabel("");
-		banditPanel1.add(reg);
 		add(banditPanel1);
 
 		banditPanel2 = new JPanel(new GridLayout(7,1));
@@ -88,40 +93,53 @@ public class ViewerFrame extends JFrame implements ActionListener{
 		banditPanel2.add(banditButton2);
 		resultLabel2 = new JLabel("");
 		banditPanel2.add(resultLabel2);
-		ucbLabel2 = new JLabel("UCB: " + ucb2);
+		ucbLabel2 = new JLabel("UCB: ");
 		banditPanel2.add(ucbLabel2);
-		regretLabel2 = new JLabel("Regret: ");
-		banditPanel2.add(regretLabel2);
-		trialTime2 = new JLabel(Integer.toString(trialTimeList.get(1)));
+		rewardMean2 = new JLabel("Reward: ");
+		banditPanel2.add(rewardMean2);
+		trialTime2 = new JLabel("Trial2" + Integer.toString(trialTimeList.get(1)));
 		banditPanel2.add(trialTime2);
-		tr = new JLabel(Integer.toString(trialTime));
+		tr = new JLabel("Trial: " + Integer.toString(trialTime));
 		banditPanel2.add(tr);
 		add(banditPanel2);
+		
+		banditButton1.doClick();
+		banditButton2.doClick();
 	}
 
 	public void actionPerformed(ActionEvent e){
 		trialTime++;
-		tr.setText(Integer.toString(trialTime));
+		tr.setText("Trial: " + Integer.toString(trialTime));
 		if(e.getActionCommand().equals("bandit1")) {
 			double reward = bandit1.play();
 			if(reward == 1.0) resultLabel1.setText("あたり");
 			else resultLabel1.setText("はずれ");
 			trialTimeList.set(0, trialTimeList.get(0)+1);
-			trialTime1.setText(Integer.toString(trialTimeList.get(0)));
+			trialTime1.setText("Trial1: " + Integer.toString(trialTimeList.get(0)));
 			double ucb = Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(0));
-			ucbLabel1.setText(Double.toString(ucb));
-
-
+			ucbLabel1.setText("UCB: " + Double.toString(ucb));
+			double newRewardMean = rewardMeanList.get(0)*(trialTimeList.get(0)-1)+reward;
+			rewardMeanList.set(0, newRewardMean/(double)trialTimeList.get(0));
+			rewardMean1.setText("Reward: " + Double.toString(rewardMeanList.get(0)));
+			
 		}
 		else if(e.getActionCommand().equals("bandit2")) {
 			double reward = bandit2.play();
 			if(reward == 1.0) resultLabel2.setText("あたり");
 			else resultLabel2.setText("はずれ");
 			trialTimeList.set(1, trialTimeList.get(1)+1);
-			trialTime1.setText(Integer.toString(trialTimeList.get(1)));
+			trialTime2.setText("Trial2: " + Integer.toString(trialTimeList.get(1)));
 			double ucb = Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(1));
-			ucbLabel2.setText(Double.toString(ucb));
+			ucbLabel2.setText("UCB: " + Double.toString(ucb));
+			double newRewardMean = rewardMeanList.get(1)*(trialTimeList.get(1)-1)+reward;
+			rewardMeanList.set(1, newRewardMean/(double)trialTimeList.get(1));
+			rewardMean2.setText("Reward: " + Double.toString(rewardMeanList.get(1)));
 		}
+		double idealExpectedReward = trialTime*0.9;
+		double accutualExpectedReward = 0;
+		accutualExpectedReward += trialTimeList.get(0)*0.9;
+		accutualExpectedReward += trialTimeList.get(1)*0.6;
+		regretLabel1.setText("Regret:" + Double.toString(idealExpectedReward - accutualExpectedReward));
 	}
 
 	public static void main(String[] args) {
