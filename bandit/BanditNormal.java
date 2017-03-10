@@ -1,6 +1,6 @@
-package bandit;
+ï»¿package bandit;
 
-public class BanditNormal extends BanditProb{//³‹K•ª•z
+public class BanditNormal extends BanditProb{//æ­£è¦åˆ†å¸ƒ
 	private MTRandom r = new MTRandom();
 	public BanditNormal(double prob) {
 		mean = prob;

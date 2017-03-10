@@ -1,7 +1,7 @@
-package bandit;
+ï»¿package bandit;
 
-public class BanditBernoulli extends BanditProb{//Šm—¦p‚Å1,1-p‚Å0‚ğ‚Æ‚é•ª•z
-	//•½‹Ï1‚ğ‚Æ‚éŠm—¦
+public class BanditBernoulli extends BanditProb{//ç¢ºç‡pã§1,1-pã§0ã‚’ã¨ã‚‹åˆ†å¸ƒ
+	//å¹³å‡ï¼1ã‚’ã¨ã‚‹ç¢ºç‡
 	private MTRandom r = new MTRandom();
 	public BanditBernoulli(double prob) {
 		mean = prob;

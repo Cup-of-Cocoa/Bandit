@@ -1,7 +1,7 @@
-package bandit;
+ï»¿package bandit;
 
 public abstract class BanditProb extends Bandit{
-	//Šm—¦•ª•z‚É]‚Á‚½•ñV‚ª“¾‚ç‚ê‚é
+	//ç¢ºç‡åˆ†å¸ƒã«å¾“ã£ãŸå ±é…¬ãŒå¾—ã‚‰ã‚Œã‚‹
 	double mean;
 	
 	public abstract double play();

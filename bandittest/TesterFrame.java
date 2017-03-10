@@ -1,4 +1,4 @@
-package bandittest;
+ï»¿package bandittest;
 
 import bandit.*;
 
@@ -19,7 +19,7 @@ import javax.swing.JTextField;
 import bandit.AgentUCBVariance;
 
 public class TesterFrame extends JFrame implements ActionListener{
-	//ƒEƒBƒ“ƒhƒE‚ÅGUI‚É‚æ‚èƒoƒ“ƒfƒBƒbƒgƒAƒ‹ƒSƒŠƒYƒ€‚ÌƒeƒXƒg‚Ég‚¤ƒXƒƒbƒg‚È‚Ç‚ğ’è‹`‚·‚é
+	//ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã§GUIã«ã‚ˆã‚Šãƒãƒ³ãƒ‡ã‚£ãƒƒãƒˆã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ã®ãƒ†ã‚¹ãƒˆã«ä½¿ã†ã‚¹ãƒ­ãƒƒãƒˆãªã©ã‚’å®šç¾©ã™ã‚‹
 
 	private static final long serialVersionUID = 1L;
 
@@ -38,7 +38,7 @@ public class TesterFrame extends JFrame implements ActionListener{
 		setLayout(new GridLayout(8,1));
 		setSize(350, 400);
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//~‚ğ‰Ÿ‚µ‚½‚çƒEƒBƒ“ƒhƒE‚ğ•Â‚¶‚é
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//Ã—ã‚’æŠ¼ã—ãŸã‚‰ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’é–‰ã˜ã‚‹
 
 		distroPanel = new JPanel();
 		distroLabel = new JLabel("Distribution");
@@ -59,7 +59,7 @@ public class TesterFrame extends JFrame implements ActionListener{
 		algoGroup = new ButtonGroup();
 		ucb1Button = new JRadioButton("UCB1", true);
 		vucbButton = new JRadioButton("VUCB");
-		epdButton = new JRadioButton("ƒÃ-Greedy");
+		epdButton = new JRadioButton("Îµ-Greedy");
 		algoGroup.add(ucb1Button);
 		algoGroup.add(vucbButton);
 		algoGroup.add(epdButton);
@@ -126,17 +126,17 @@ public class TesterFrame extends JFrame implements ActionListener{
 		try {
 			num_of_trial = Integer.parseInt(trialField.getText());
 		} catch (NumberFormatException e) {
-			statusLabel1.setText("s‰ñ”‚ªw’è‚³‚ê‚Ä‚¢‚È‚¢‚©®”‚Å‚Í‚ ‚è‚Ü‚¹‚ñ");
+			statusLabel1.setText("è©¦è¡Œå›æ•°ãŒæŒ‡å®šã•ã‚Œã¦ã„ãªã„ã‹æ•´æ•°ã§ã¯ã‚ã‚Šã¾ã›ã‚“");
 			return;
 		}
 		if (num_of_trial <= 0) {
-			statusLabel1.setText("s‰ñ”‚ª‚OˆÈ‰º‚Å‚·");
+			statusLabel1.setText("è©¦è¡Œå›æ•°ãŒï¼ä»¥ä¸‹ã§ã™");
 			return;
 		}
 
-		String testName = Integer.toString(num_of_trial) + "‰ñ@";
+		String testName = Integer.toString(num_of_trial) + "å›ã€€";
 
-		//ƒoƒ“ƒfƒBƒbƒgƒ}ƒVƒ“‚Ì•ª•z
+		//ãƒãƒ³ãƒ‡ã‚£ãƒƒãƒˆãƒã‚·ãƒ³ã®åˆ†å¸ƒ
 		double probs[] = DEFALT_PROBS;
 		if(!probField.getText().equals("")) {			
 			String probString[] = probField.getText().split(" ");
@@ -146,39 +146,39 @@ public class TesterFrame extends JFrame implements ActionListener{
 			}
 		}	
 
-		//•ª•z‚ğƒ‰ƒWƒIƒ{ƒ^ƒ“‚©‚çæ“¾‚·‚é
+		//åˆ†å¸ƒã‚’ãƒ©ã‚¸ã‚ªãƒœã‚¿ãƒ³ã‹ã‚‰å–å¾—ã™ã‚‹
 		if(bernoulliButton.isSelected()) {
-			testName += "ƒxƒ‹ƒk[ƒC•ª•z";
+			testName += "ãƒ™ãƒ«ãƒŒãƒ¼ã‚¤åˆ†å¸ƒ";
 			banditList = maker.makeBanditBernoulli(probs);
 		}
 		else if(gaussianButton.isSelected()) {
-			statusLabel1.setText("Normal‚Í–¢À‘•‚Å‚·");
+			statusLabel1.setText("Normalã¯æœªå®Ÿè£…ã§ã™");
 			return;
 		}
 		else {
-			statusLabel1.setText("ƒXƒƒbƒg‚Ì•ª•z‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+			statusLabel1.setText("ã‚¹ãƒ­ãƒƒãƒˆã®åˆ†å¸ƒãŒé¸æŠã•ã‚Œã¦ã„ã¾ã›ã‚“");
 			return;
 		}
-		//ƒAƒ‹ƒSƒŠƒYƒ€‚ğƒ‰ƒWƒIƒ{ƒ^ƒ“‚©‚çæ“¾‚·‚é
+		//ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ã‚’ãƒ©ã‚¸ã‚ªãƒœã‚¿ãƒ³ã‹ã‚‰å–å¾—ã™ã‚‹
 
 		if(ucb1Button.isSelected()) {
 			agent = new AgentUCB1(banditList, num_of_trial);
 			dirName += "UCB1";
-			testName += " UCB1ƒAƒ‹ƒSƒŠƒYƒ€";
+			testName += " UCB1ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ";
 			statusLabel1.setText(testName);
 		}
 		else if(vucbButton.isSelected()) {
 			agent = new AgentUCBVariance(banditList, num_of_trial);
 			dirName += "VUCB";
-			testName += " VUCBƒAƒ‹ƒSƒŠƒYƒ€";
+			testName += " VUCBã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ";
 		}
 		else if(epdButton.isSelected()) {
 			agent = new AgentEpsilonDecreasing(banditList, num_of_trial);
-			dirName += "ƒÃ-Greedy";
-			testName += " ƒÃ-GreedyƒAƒ‹ƒSƒŠƒYƒ€";
+			dirName += "Îµ-Greedy";
+			testName += " Îµ-Greedyã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ";
 		}
 		else {
-			statusLabel1.setText("ƒAƒ‹ƒSƒŠƒYƒ€‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ");
+			statusLabel1.setText("ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ãŒé¸æŠã•ã‚Œã¦ã„ã¾ã›ã‚“");
 			return;
 		}
 		tester = new Tester(dirName);

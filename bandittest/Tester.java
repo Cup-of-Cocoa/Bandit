@@ -1,4 +1,4 @@
-package bandittest;
+ï»¿package bandittest;
 
 import bandit.*;
 
@@ -86,13 +86,13 @@ public class Tester {
 			reward.close();
 			regret.close();
 			accuracy.close();
-			return ("³í‚ÉI—¹‚µ‚Ü‚µ‚½B");
+			return ("æ­£å¸¸ã«çµ‚äº†ã—ã¾ã—ãŸã€‚");
 		}catch (IOException e) {			
 			if(!(new File(DEFALT_FOLDER).exists())) { 
-				return ("ƒfƒtƒHƒ‹ƒg‚ÌƒtƒHƒ‹ƒ_‚ª‘¶İ‚µ‚Ü‚¹‚ñ");
+				return ("ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ•ã‚©ãƒ«ãƒ€ãŒå­˜åœ¨ã—ã¾ã›ã‚“");
 			}
 			else {
-				return ("ƒtƒ@ƒCƒ‹‚ğì¬‚Å‚«‚Ü‚¹‚ñ");
+				return ("ãƒ•ã‚¡ã‚¤ãƒ«ã‚’ä½œæˆã§ãã¾ã›ã‚“");
 			}
 		}
 	}
