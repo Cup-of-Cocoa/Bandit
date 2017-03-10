@@ -149,10 +149,14 @@ public class ViewerFrame extends JFrame implements ActionListener{
 		if (ucb1 > ucb2) {
 			banditLabel1.setText("Bandit1 *");
 			banditLabel2.setText("Bandit2");
+			banditButton1.setEnabled(true);
+			banditButton2.setEnabled(false);
 		}
 		else {
 			banditLabel1.setText("Bandit1");
 			banditLabel2.setText("Bandit2 *");
+			banditButton1.setEnabled(false);
+			banditButton2.setEnabled(true);
 		}
 	}
 
