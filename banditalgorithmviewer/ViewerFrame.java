@@ -146,7 +146,7 @@ public class ViewerFrame extends JFrame implements ActionListener{
 		accutualExpectedReward += trialTimeList.get(0)*setProb1;
 		accutualExpectedReward += trialTimeList.get(1)*setProb2;
 		regretLabel1.setText("Regret:" + Double.toString(idealExpectedReward - accutualExpectedReward));
-		if (ucb1 > ucb2) {
+		if (rewardMeanList.get(0) > rewardMeanList.get(1)) {
 			banditLabel1.setText("Bandit1 *");
 			banditLabel2.setText("Bandit2");
 			if(trialTime >= 2) {
