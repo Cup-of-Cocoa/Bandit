@@ -1,4 +1,4 @@
-package banditalgorithmviewer;
+﻿package banditalgorithmviewer;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -13,8 +13,9 @@ import javax.swing.JPanel;
 
 import bandit.BanditBernoulli;
 
+
 public class ViewerFrame extends JFrame implements ActionListener{
-	//���ɗ����͂킩��Ȃ�����UCB�A���S���Y���������i�H�j���Ă݂�
+	//役に立つかはわからないけどUCBアルゴリズムを可視化（？）してみた
 	private static final long serialVersionUID = 1L;
 
 	JPanel banditPanel1, banditPanel2;
@@ -22,16 +23,16 @@ public class ViewerFrame extends JFrame implements ActionListener{
 	JLabel trialTime1, trialTime2, rewardMean1, rewardMean2;
 	JButton banditButton1, banditButton2;
 
-	BanditBernoulli bandit1 = new BanditBernoulli(0.9);
-	BanditBernoulli bandit2 = new BanditBernoulli(0.6);
-
-
+	final double prob1 = 0.9;
+	final double prob2 = 0.6;
+	BanditBernoulli bandit1 = new BanditBernoulli(prob1);
+	BanditBernoulli bandit2 = new BanditBernoulli(prob2);
 
 	double ucb1=0, ucb2=0;
 	int trialTime = 0;
 
-	List<Double> rewardMeanList = new ArrayList<Double>();//�e�X���b�g�����܂łɔr�o�������_�̕���
-	List<Integer> trialTimeList = new ArrayList<Integer>();//�e�X���b�g�̎��s��
+	List<Double> rewardMeanList = new ArrayList<Double>();//各スロットが今までに排出した得点の平均
+	List<Integer> trialTimeList = new ArrayList<Integer>();//各スロットの試行回数
 
 
 	public ViewerFrame() {
@@ -52,7 +53,7 @@ public class ViewerFrame extends JFrame implements ActionListener{
 		setLayout(new GridLayout(1,2));
 		setSize(500, 500);
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//�~����������E�B���h�E�����
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//×を押したらウィンドウを閉じる
 
 		banditPanel1 = new JPanel(new GridLayout(7,1));
 		banditLabel1 = new JLabel("Bandit1");
@@ -109,9 +110,9 @@ public class ViewerFrame extends JFrame implements ActionListener{
 			double newRewardMean = rewardMeanList.get(0)*(trialTimeList.get(0)-1)+reward;
 			rewardMeanList.set(0, newRewardMean/(double)trialTimeList.get(0));
 			rewardMean1.setText("Reward: " + Double.toString(rewardMeanList.get(0)));
-			if (trialTime == 1) ucb1 = rewardMeanList.get(0) + Math.sqrt((2*Math.log(trialTime+1))/(double)trialTimeList.get(0));
-			else  ucb1 = rewardMeanList.get(0) + Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(0));
-			ucbLabel1.setText("UCB: " + Double.toString(ucb1));
+			if (trialTime == 1) ucb1 = Math.sqrt((2*Math.log(trialTime+1))/(double)trialTimeList.get(0));
+			else  ucb1 = Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(0));
+			ucbLabel1.setText("UCB: " + Double.toString(rewardMeanList.get(0) + ucb1));
 
 		}
 		else if(e.getActionCommand().equals("bandit2")) {
@@ -123,13 +124,13 @@ public class ViewerFrame extends JFrame implements ActionListener{
 			double newRewardMean = rewardMeanList.get(1)*(trialTimeList.get(1)-1)+reward;
 			rewardMeanList.set(1, newRewardMean/(double)trialTimeList.get(1));
 			rewardMean2.setText("Reward: " + Double.toString(rewardMeanList.get(1)));
-			ucb2 = rewardMeanList.get(1) + Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(1));
-			ucbLabel2.setText("UCB: " + Double.toString(ucb2));
+			ucb2 = Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(1));
+			ucbLabel2.setText("UCB: " + Double.toString(rewardMeanList.get(1) + ucb2));
 		}
-		double idealExpectedReward = trialTime*0.9;
+		double idealExpectedReward = trialTime*prob1;
 		double accutualExpectedReward = 0;
-		accutualExpectedReward += trialTimeList.get(0)*0.9;
-		accutualExpectedReward += trialTimeList.get(1)*0.6;
+		accutualExpectedReward += trialTimeList.get(0)*prob1;
+		accutualExpectedReward += trialTimeList.get(1)*prob2;
 		regretLabel1.setText("Regret:" + Double.toString(idealExpectedReward - accutualExpectedReward));
 		if (ucb1 > ucb2) {
 			banditLabel1.setText("Bandit1 *");

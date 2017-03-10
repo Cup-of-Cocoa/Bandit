@@ -1,9 +1,9 @@
-package bandit;
+ï»¿package bandit;
 
 import java.util.List;
 
 public class AgentEpsilonDecreasing extends Agent{
-	private double c,d;//epsilon-DecreasingƒAƒ‹ƒSƒŠƒYƒ€—p ‚½‚¾‚µd‚Í•W–{•½‹Ï‚©‚çŒvŽZ‚·‚é
+	private double c,d;//epsilon-Decreasingã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ç”¨ ãŸã ã—dã¯æ¨™æœ¬å¹³å‡ã‹ã‚‰è¨ˆç®—ã™ã‚‹
 	private MTRandom r = new MTRandom();
 
 	public AgentEpsilonDecreasing() {
@@ -24,7 +24,7 @@ public class AgentEpsilonDecreasing extends Agent{
 
 	protected int selectBandit() {
 		d = rewardMeanList.get(optimalBanditIndex) - rewardMeanList.get(suboptimalBanditIndex);
-		//Šm—¦epsilon‚Åƒ‰ƒ“ƒ_ƒ€‚ÈƒXƒƒbƒg‚ð‘I‚Ô
+		//ç¢ºçŽ‡epsilonã§ãƒ©ãƒ³ãƒ€ãƒ ãªã‚¹ãƒ­ãƒƒãƒˆã‚’é¸ã¶
 		if (r.nextDouble() > Math.min(1,(c*NUM_OF_BANDIT)/(d*d*trialTime))) {
 			return optimalBanditIndex;
 		}

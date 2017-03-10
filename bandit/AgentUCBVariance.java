@@ -1,9 +1,9 @@
-package bandit;
+ï»¿package bandit;
 
 import java.util.List;
 import java.util.ArrayList;
 
-public class AgentUCBVariance extends AgentUCB{//•ªU‚ğæ‚è“ü‚ê‚½UCBƒAƒ‹ƒSƒŠƒYƒ€
+public class AgentUCBVariance extends AgentUCB{//åˆ†æ•£ã‚’å–ã‚Šå…¥ã‚ŒãŸUCBã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ 
 
 	public AgentUCBVariance() {
 		super();
@@ -15,7 +15,7 @@ public class AgentUCBVariance extends AgentUCB{//•ªU‚ğæ‚è“ü‚ê‚½UCBƒAƒ‹ƒSƒŠƒYƒ€
 		initialize();
 	}
 
-	public void initialize() {//ƒI[ƒo[ƒ‰ƒCƒh
+	public void initialize() {//ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰
 		super.initialize();
 		for(int i=0; i < NUM_OF_BANDIT; i++) {
 			double vjs = Math.sqrt(2*Math.log(trialTime));
@@ -25,7 +25,7 @@ public class AgentUCBVariance extends AgentUCB{//•ªU‚ğæ‚è“ü‚ê‚½UCBƒAƒ‹ƒSƒŠƒYƒ€
 		renewOptimal(ucbList);		
 	}
 
-	protected void renewBanditInfo(int banditIndex, double reward) {//ƒI[ƒo[ƒ‰ƒCƒh
+	protected void renewBanditInfo(int banditIndex, double reward) {//ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰
 		super.renewBanditInfo(banditIndex, reward);
 		for(int i=0; i < NUM_OF_BANDIT; i++) {
 			double V = rewardMeanList.get(i) * (1.0 - rewardMeanList.get(i));

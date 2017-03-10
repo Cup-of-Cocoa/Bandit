@@ -1,10 +1,10 @@
-package bandit;
+ï»¿package bandit;
 
 import java.util.List;
 import java.util.ArrayList;
 
 public class AgentUCB extends Agent{
-	protected List<Double> ucbList = new ArrayList<Double>(); //UCBƒAƒ‹ƒSƒŠƒYƒ€—p
+	protected List<Double> ucbList = new ArrayList<Double>(); //UCBã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ç”¨
 
 	protected AgentUCB() {
 		super();
@@ -14,7 +14,7 @@ public class AgentUCB extends Agent{
 		super(bandits, num_of_trial);
 	}
 
-	public void initialize() {//ƒI[ƒo[ƒ‰ƒCƒh
+	public void initialize() {//ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰
 		super.initialize();
 		for(int i=0; i < NUM_OF_BANDIT; i++) {
 			double tmpReward = banditList.get(i).play();
@@ -31,26 +31,26 @@ public class AgentUCB extends Agent{
 
 	public void run() {
 		while(trialTime < NUM_OF_TRIAL) {
-			//‚±‚Ìs‚ÅƒvƒŒƒC‚·‚éƒXƒƒbƒgi‚ÌƒCƒ“ƒfƒbƒNƒXj‚ğƒAƒ‹ƒSƒŠƒYƒ€‚É]‚¢‘I‚Ô
+			//ã“ã®è©¦è¡Œã§ãƒ—ãƒ¬ã‚¤ã™ã‚‹ã‚¹ãƒ­ãƒƒãƒˆï¼ˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼‰ã‚’ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ã«å¾“ã„é¸ã¶
 			int selectedBanditIndex = selectBandit();
-			//ƒXƒƒbƒg‚ğƒvƒŒƒC‚·‚é
+			//ã‚¹ãƒ­ãƒƒãƒˆã‚’ãƒ—ãƒ¬ã‚¤ã™ã‚‹
 			double tmpReward = banditList.get(selectedBanditIndex).play();
-			//‡Œv“¾“_i•ñVj‚ğŒvZ‚µƒf[ƒ^ƒŠƒXƒg‚É‰Á‚¦‚é
+			//åˆè¨ˆå¾—ç‚¹ï¼ˆå ±é…¬ï¼‰ã‚’è¨ˆç®—ã—ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«åŠ ãˆã‚‹
 			totalReward += tmpReward;
 			totalRewardData.add(totalReward);
-			//s‰ñ”‚ğ‘‚â‚µu³‰ğ—¦v‚ğƒf[ƒ^ƒŠƒXƒg‚É‰Á‚¦‚é
+			//è©¦è¡Œå›æ•°ã‚’å¢—ã‚„ã—ã€Œæ­£è§£ç‡ã€ã‚’ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«åŠ ãˆã‚‹
 			trialTime++;
 			accuracyRateData.add((double)(trialTimeList.get(bestBanditIndex))/(double)trialTime);
-			//ƒvƒŒƒC‚µ‚½ƒ}ƒVƒ“‚Ìs‰ñ”‚Æ•W–{•½‹Ï‚ğXV‚·‚éi‘¼‚ÉXV‚·‚×‚«‚à‚Ì‚ª‚ ‚ê‚ÎƒI[ƒo[ƒ‰ƒCƒhj
+			//ãƒ—ãƒ¬ã‚¤ã—ãŸãƒã‚·ãƒ³ã®è©¦è¡Œå›æ•°ã¨æ¨™æœ¬å¹³å‡ã‚’æ›´æ–°ã™ã‚‹ï¼ˆä»–ã«æ›´æ–°ã™ã¹ãã‚‚ã®ãŒã‚ã‚Œã°ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ï¼‰
 			renewBanditInfo(selectedBanditIndex, tmpReward);			
-			//ƒŠƒOƒŒƒbƒg‚ğƒf[ƒ^ƒŠƒXƒg‚É‰Á‚¦‚é
+			//ãƒªã‚°ãƒ¬ãƒƒãƒˆã‚’ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«åŠ ãˆã‚‹
 			double idealExpectedReward = trialTime*banditList.get(bestBanditIndex).getMean();
 			double accutualExpectedReward = 0;
 			for (int i=0; i < NUM_OF_BANDIT; i++) {
 				accutualExpectedReward += trialTimeList.get(i)*banditList.get(i).getMean();
 			}
 			totalRegretData.add(idealExpectedReward - accutualExpectedReward);
-			//‘¼‚Ìƒ}ƒVƒ“‚ªÅ“K‚É‚È‚ê‚Î‚»‚ê‚ğV‚µ‚¢Å“K‚Èƒ}ƒVƒ“‚É‚·‚é
+			//ä»–ã®ãƒã‚·ãƒ³ãŒæœ€é©ã«ãªã‚Œã°ãã‚Œã‚’æ–°ã—ã„æœ€é©ãªãƒã‚·ãƒ³ã«ã™ã‚‹
 			renewOptimal(ucbList);
 		}
 	}

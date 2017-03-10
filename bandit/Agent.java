@@ -1,31 +1,31 @@
-package bandit;
+ï»¿package bandit;
 
 import java.util.List;
 import java.util.ArrayList;
 
 public abstract class Agent {
-	//Agent‚É‚Ís‰ñ”‚Æ—p‚¢‚éƒXƒƒbƒgƒ}ƒVƒ“‚ÌW‡‚ğ—^‚¦‚éB
-	//O‚Â‚Ìƒf[ƒ^‚ª“¾‚ç‚ê‚é‚Ì‚ÅAgent‚É‚æ‚é‚Ğ‚Æ‚Ü‚Æ‚Ü‚è‚Ìs‚ğ‚³‚ç‚ÉŒJ‚è•Ô‚·‚±‚Æ‚Å‚»‚Ìƒf[ƒ^‚Ì•½‹Ï‚ª“¾‚ç‚ê‚éB
+	//Agentã«ã¯è©¦è¡Œå›æ•°ã¨ç”¨ã„ã‚‹ã‚¹ãƒ­ãƒƒãƒˆãƒã‚·ãƒ³ã®é›†åˆã‚’ä¸ãˆã‚‹ã€‚
+	//ä¸‰ã¤ã®ãƒ‡ãƒ¼ã‚¿ãŒå¾—ã‚‰ã‚Œã‚‹ã®ã§Agentã«ã‚ˆã‚‹ã²ã¨ã¾ã¨ã¾ã‚Šã®è©¦è¡Œã‚’ã•ã‚‰ã«ç¹°ã‚Šè¿”ã™ã“ã¨ã§ãã®ãƒ‡ãƒ¼ã‚¿ã®å¹³å‡ãŒå¾—ã‚‰ã‚Œã‚‹ã€‚
 	
-	protected List<Double> totalRewardData = new ArrayList<Double>();//Šes“_‚É‚¨‚¯‚é‡Œv“¾“_‚Ìƒf[ƒ^
-	protected List<Double> accuracyRateData = new ArrayList<Double>();//Šes“_‚É‚¨‚¯‚éu³‰ğ—¦v(=ÀÛ‚ÉÅ‚à‚æ‚¢ƒXƒƒbƒg‚ğ‘I‚×‚Ä‚¢‚éŠ„‡j‚Ìƒf[ƒ^
-	protected List<Double> totalRegretData = new ArrayList<Double>();//Šes“_‚É‚¨‚¯‚éƒŠƒOƒŒƒbƒg‚Ìƒf[ƒ^
+	protected List<Double> totalRewardData = new ArrayList<Double>();//å„è©¦è¡Œæ™‚ç‚¹ã«ãŠã‘ã‚‹åˆè¨ˆå¾—ç‚¹ã®ãƒ‡ãƒ¼ã‚¿
+	protected List<Double> accuracyRateData = new ArrayList<Double>();//å„è©¦è¡Œæ™‚ç‚¹ã«ãŠã‘ã‚‹ã€Œæ­£è§£ç‡ã€(=å®Ÿéš›ã«æœ€ã‚‚ã‚ˆã„ã‚¹ãƒ­ãƒƒãƒˆã‚’é¸ã¹ã¦ã„ã‚‹å‰²åˆï¼‰ã®ãƒ‡ãƒ¼ã‚¿
+	protected List<Double> totalRegretData = new ArrayList<Double>();//å„è©¦è¡Œæ™‚ç‚¹ã«ãŠã‘ã‚‹ãƒªã‚°ãƒ¬ãƒƒãƒˆã®ãƒ‡ãƒ¼ã‚¿
 	
-	protected List<BanditProb> banditList = new ArrayList<BanditProb>();//ƒXƒƒbƒg‚ÌW‡
-	protected List<Double> rewardMeanList = new ArrayList<Double>();//ŠeƒXƒƒbƒg‚ª¡‚Ü‚Å‚É”ro‚µ‚½“¾“_‚Ì•½‹Ï
-	protected List<Integer> trialTimeList = new ArrayList<Integer>();//ŠeƒXƒƒbƒg‚Ìs‰ñ”
+	protected List<BanditProb> banditList = new ArrayList<BanditProb>();//ã‚¹ãƒ­ãƒƒãƒˆã®é›†åˆ
+	protected List<Double> rewardMeanList = new ArrayList<Double>();//å„ã‚¹ãƒ­ãƒƒãƒˆãŒä»Šã¾ã§ã«æ’å‡ºã—ãŸå¾—ç‚¹ã®å¹³å‡
+	protected List<Integer> trialTimeList = new ArrayList<Integer>();//å„ã‚¹ãƒ­ãƒƒãƒˆã®è©¦è¡Œå›æ•°
 	protected List<Double> valueList = new ArrayList<Double>();
 	
 	protected int bestBanditIndex;
 
-	protected int NUM_OF_TRIAL; //s‰ñ”iƒXƒƒbƒg‚ğƒvƒŒƒC‚·‚é‰ñ”j
+	protected int NUM_OF_TRIAL; //è©¦è¡Œå›æ•°ï¼ˆï¼ã‚¹ãƒ­ãƒƒãƒˆã‚’ãƒ—ãƒ¬ã‚¤ã™ã‚‹å›æ•°ï¼‰
 	protected int NUM_OF_BANDIT;
-	protected int optimalBanditIndex; //Agent‚ªuÅ“K‚¾v‚Æl‚¦‚éƒXƒƒbƒg‚ÌƒCƒ“ƒfƒbƒNƒX
+	protected int optimalBanditIndex; //AgentãŒã€Œæœ€é©ã ã€ã¨è€ƒãˆã‚‹ã‚¹ãƒ­ãƒƒãƒˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 	protected int suboptimalBanditIndex;
 	protected int trialTime;
 	protected double totalReward;
 
-	protected Agent() {//ƒeƒXƒg—p
+	protected Agent() {//ãƒ†ã‚¹ãƒˆç”¨
 		banditList.add(new BanditBernoulli(0.9));
 		banditList.add(new BanditBernoulli(0.6));
 		NUM_OF_TRIAL = 1000000;
@@ -34,17 +34,17 @@ public abstract class Agent {
 	}
 	
 	protected Agent(List<BanditProb> bandits, int num_of_trial) {
-		//s‚Ég‚¤ƒXƒƒbƒgW‡‚Æs‰ñ”‚ğˆø”‚Æ‚µA
-		//ŠeƒXƒƒbƒg‚Ìs‰ñ”‚Æ•W–{•½‹Ï‚ğ‰Šú‰»‚·‚é
+		//è©¦è¡Œã«ä½¿ã†ã‚¹ãƒ­ãƒƒãƒˆé›†åˆã¨è©¦è¡Œå›æ•°ã‚’å¼•æ•°ã¨ã—ã€
+		//å„ã‚¹ãƒ­ãƒƒãƒˆã®è©¦è¡Œå›æ•°ã¨æ¨™æœ¬å¹³å‡ã‚’åˆæœŸåŒ–ã™ã‚‹
 		banditList = bandits;
 		NUM_OF_TRIAL = num_of_trial;
 		NUM_OF_BANDIT = banditList.size();
-		//İ’è‚µ‚½’l‚Ì‚¤‚¿Å‚à•½‹Ï‚ª‚‚¢‚à‚Ì
+		//è¨­å®šã—ãŸå€¤ã®ã†ã¡æœ€ã‚‚å¹³å‡ãŒé«˜ã„ã‚‚ã®
 		bestBanditIndex = bestBanditIndex();
-		//initialize‚ÍŠeqƒNƒ‰ƒX‚Ås‚¤
+		//initializeã¯å„å­ã‚¯ãƒ©ã‚¹ã§è¡Œã†
 	}
 	
-	protected void initialize() {//“¯‚¶ƒIƒuƒWƒFƒNƒg‚ğÄ—˜—p‚·‚é‚Æ‚«‚É‚àg‚¦‚é
+	protected void initialize() {//åŒã˜ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å†åˆ©ç”¨ã™ã‚‹ã¨ãã«ã‚‚ä½¿ãˆã‚‹
 		optimalBanditIndex = 0;
 		suboptimalBanditIndex = 1;
 		trialTime = 0;
@@ -65,9 +65,9 @@ public abstract class Agent {
 
 
 	protected void renewOptimal(List<Double> list)  {
-		//uÅ“Kv‚ÈƒXƒƒbƒg‚ª‚Ç‚ê‚©‚Æ‚¢‚¤î•ñ‚ğXV‚·‚é
-		//uÅ“Kv‚ğ‘I‚Ô‚½‚ß‚ÉŠeƒXƒƒbƒg‚É‚Â‚¯‚ç‚ê‚½î•ñ‚ÍƒAƒ‹ƒSƒŠƒYƒ€‚É‚æ‚èˆÙ‚È‚é
-		//ˆø”‚Í‚»‚Ìuî•ñv‚ğ‚Á‚½ƒŠƒXƒg
+		//ã€Œæœ€é©ã€ãªã‚¹ãƒ­ãƒƒãƒˆãŒã©ã‚Œã‹ã¨ã„ã†æƒ…å ±ã‚’æ›´æ–°ã™ã‚‹
+		//ã€Œæœ€é©ã€ã‚’é¸ã¶ãŸã‚ã«å„ã‚¹ãƒ­ãƒƒãƒˆã«ã¤ã‘ã‚‰ã‚ŒãŸæƒ…å ±ã¯ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ã«ã‚ˆã‚Šç•°ãªã‚‹
+		//å¼•æ•°ã¯ãã®ã€Œæƒ…å ±ã€ã‚’æŒã£ãŸãƒªã‚¹ãƒˆ
 		double tmp_highest = list.get(optimalBanditIndex);
 		for(int i=0; i < NUM_OF_BANDIT; i++){
 			if(list.get(i) > tmp_highest) {
@@ -78,9 +78,9 @@ public abstract class Agent {
 	}
 
 	protected void renewBanditInfo(int banditIndex, double reward) {
-		//ƒvƒŒƒC‚µ‚½ƒXƒƒbƒg‚Ìs‰ñ”E•W–{•½‹Ï‚ğXV‚·‚é
-		//‚±‚±‚ÌXV‚Í‹¤’Ê
-		//UCB‚È‚ÇA‘¼‚Ì’l‚ÌXV‚ª•K—v‚È‚Æ‚«‚ÍƒI[ƒo[ƒ‰ƒCƒh‚·‚é
+		//ãƒ—ãƒ¬ã‚¤ã—ãŸã‚¹ãƒ­ãƒƒãƒˆã®è©¦è¡Œå›æ•°ãƒ»æ¨™æœ¬å¹³å‡ã‚’æ›´æ–°ã™ã‚‹
+		//ã“ã“ã®æ›´æ–°ã¯å…±é€š
+		//UCBãªã©ã€ä»–ã®å€¤ã®æ›´æ–°ãŒå¿…è¦ãªã¨ãã¯ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã™ã‚‹
 		int tmpTrialTime = trialTimeList.get(banditIndex);
 		trialTimeList.set(banditIndex, tmpTrialTime+1);
 		rewardMeanList.set(banditIndex, (rewardMeanList.get(banditIndex)*(double)tmpTrialTime + reward)/(double)trialTimeList.get(banditIndex));
@@ -88,26 +88,26 @@ public abstract class Agent {
 
 	public void run() {
 		while(trialTime < NUM_OF_TRIAL) {
-			//‚±‚Ìs‚ÅƒvƒŒƒC‚·‚éƒXƒƒbƒgi‚ÌƒCƒ“ƒfƒbƒNƒXj‚ğƒAƒ‹ƒSƒŠƒYƒ€‚É]‚¢‘I‚Ô
+			//ã“ã®è©¦è¡Œã§ãƒ—ãƒ¬ã‚¤ã™ã‚‹ã‚¹ãƒ­ãƒƒãƒˆï¼ˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ï¼‰ã‚’ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ã«å¾“ã„é¸ã¶
 			int selectedBanditIndex = selectBandit();
-			//ƒXƒƒbƒg‚ğƒvƒŒƒC‚·‚é
+			//ã‚¹ãƒ­ãƒƒãƒˆã‚’ãƒ—ãƒ¬ã‚¤ã™ã‚‹
 			double tmpReward = banditList.get(selectedBanditIndex).play();
-			//‡Œv“¾“_i•ñVj‚ğŒvZ‚µƒf[ƒ^ƒŠƒXƒg‚É‰Á‚¦‚é
+			//åˆè¨ˆå¾—ç‚¹ï¼ˆå ±é…¬ï¼‰ã‚’è¨ˆç®—ã—ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«åŠ ãˆã‚‹
 			totalReward += tmpReward;
 			totalRewardData.add(totalReward);
-			//s‰ñ”‚ğ‘‚â‚µu³‰ğ—¦v‚ğƒf[ƒ^ƒŠƒXƒg‚É‰Á‚¦‚é
+			//è©¦è¡Œå›æ•°ã‚’å¢—ã‚„ã—ã€Œæ­£è§£ç‡ã€ã‚’ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«åŠ ãˆã‚‹
 			trialTime++;
 			accuracyRateData.add((double)(trialTimeList.get(bestBanditIndex))/(double)trialTime);
-			//ƒvƒŒƒC‚µ‚½ƒ}ƒVƒ“‚Ìs‰ñ”‚Æ•W–{•½‹Ï‚ğXV‚·‚éi‘¼‚ÉXV‚·‚×‚«‚à‚Ì‚ª‚ ‚ê‚ÎƒI[ƒo[ƒ‰ƒCƒhj
+			//ãƒ—ãƒ¬ã‚¤ã—ãŸãƒã‚·ãƒ³ã®è©¦è¡Œå›æ•°ã¨æ¨™æœ¬å¹³å‡ã‚’æ›´æ–°ã™ã‚‹ï¼ˆä»–ã«æ›´æ–°ã™ã¹ãã‚‚ã®ãŒã‚ã‚Œã°ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ï¼‰
 			renewBanditInfo(selectedBanditIndex, tmpReward);			
-			//ƒŠƒOƒŒƒbƒg‚ğƒf[ƒ^ƒŠƒXƒg‚É‰Á‚¦‚é
+			//ãƒªã‚°ãƒ¬ãƒƒãƒˆã‚’ãƒ‡ãƒ¼ã‚¿ãƒªã‚¹ãƒˆã«åŠ ãˆã‚‹
 			double idealExpectedReward = trialTime*banditList.get(bestBanditIndex).getMean();
 			double accutualExpectedReward = 0;
 			for (int i=0; i < NUM_OF_BANDIT; i++) {
 				accutualExpectedReward += trialTimeList.get(i)*banditList.get(i).getMean();
 			}
 			totalRegretData.add(idealExpectedReward - accutualExpectedReward);
-			//‘¼‚Ìƒ}ƒVƒ“‚ªÅ“K‚É‚È‚ê‚Î‚»‚ê‚ğV‚µ‚¢Å“K‚Èƒ}ƒVƒ“‚É‚·‚é
+			//ä»–ã®ãƒã‚·ãƒ³ãŒæœ€é©ã«ãªã‚Œã°ãã‚Œã‚’æ–°ã—ã„æœ€é©ãªãƒã‚·ãƒ³ã«ã™ã‚‹
 			renewOptimal(rewardMeanList);
 		}
 	}
@@ -136,7 +136,7 @@ public abstract class Agent {
 	public List<Double> getTotalRegretData() { return totalRegretData; }
 	public int getNUM_OF_TRIAL() {return NUM_OF_TRIAL; }
 	
-	protected abstract int selectBandit();//‘I‚Ñ•û‚ÍƒAƒ‹ƒSƒŠƒYƒ€‚É‚æ‚é
+	protected abstract int selectBandit();//é¸ã³æ–¹ã¯ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ã«ã‚ˆã‚‹
 
 
 }
