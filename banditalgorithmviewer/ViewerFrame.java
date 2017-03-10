@@ -23,10 +23,10 @@ public class ViewerFrame extends JFrame implements ActionListener{
 	JLabel trialTime1, trialTime2, rewardMean1, rewardMean2;
 	JButton banditButton1, banditButton2;
 
-	final double prob1 = 0.9;
-	final double prob2 = 0.6;
-	BanditBernoulli bandit1 = new BanditBernoulli(prob1);
-	BanditBernoulli bandit2 = new BanditBernoulli(prob2);
+	final double prob1 = 0.55;
+	final double prob2 = 0.45;
+	BanditBernoulli bandit1;
+	BanditBernoulli bandit2;
 
 	double ucb1=0, ucb2=0;
 	int trialTime = 0;
@@ -36,6 +36,14 @@ public class ViewerFrame extends JFrame implements ActionListener{
 
 
 	public ViewerFrame() {
+		if (Math.random() < 0.5) {
+			bandit1 = new BanditBernoulli(prob1);
+			bandit2 = new BanditBernoulli(prob2);
+		}
+		else {
+			bandit1 = new BanditBernoulli(prob2);
+			bandit2 = new BanditBernoulli(prob1);
+		}
 		rewardMeanList.add(0.0);
 		rewardMeanList.add(0.0);
 		trialTimeList.add(0);
