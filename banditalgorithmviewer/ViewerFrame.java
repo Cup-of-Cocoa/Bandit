@@ -25,6 +25,8 @@ public class ViewerFrame extends JFrame implements ActionListener{
 
 	final double prob1 = 0.55;
 	final double prob2 = 0.45;
+	double setProb1;
+	double setProb2;
 	BanditBernoulli bandit1;
 	BanditBernoulli bandit2;
 
@@ -38,11 +40,15 @@ public class ViewerFrame extends JFrame implements ActionListener{
 	public ViewerFrame() {
 		if (Math.random() < 0.5) {
 			bandit1 = new BanditBernoulli(prob1);
+			setProb1 = prob1;
 			bandit2 = new BanditBernoulli(prob2);
+			setProb2 = prob2;
 		}
 		else {
 			bandit1 = new BanditBernoulli(prob2);
+			setProb1 = prob2;
 			bandit2 = new BanditBernoulli(prob1);
+			setProb2 = prob1;
 		}
 		rewardMeanList.add(0.0);
 		rewardMeanList.add(0.0);
@@ -119,8 +125,8 @@ public class ViewerFrame extends JFrame implements ActionListener{
 			rewardMeanList.set(0, newRewardMean/(double)trialTimeList.get(0));
 			rewardMean1.setText("Reward: " + Double.toString(rewardMeanList.get(0)));
 			if (trialTime == 1) ucb1 = Math.sqrt((2*Math.log(trialTime+1))/(double)trialTimeList.get(0));
-			else  ucb1 = Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(0));
-			ucbLabel1.setText("UCB: " + Double.toString(rewardMeanList.get(0) + ucb1));
+			else  ucb1 = rewardMeanList.get(0) + Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(0));
+			ucbLabel1.setText("UCB: " + Double.toString(ucb1));
 
 		}
 		else if(e.getActionCommand().equals("bandit2")) {
@@ -132,13 +138,13 @@ public class ViewerFrame extends JFrame implements ActionListener{
 			double newRewardMean = rewardMeanList.get(1)*(trialTimeList.get(1)-1)+reward;
 			rewardMeanList.set(1, newRewardMean/(double)trialTimeList.get(1));
 			rewardMean2.setText("Reward: " + Double.toString(rewardMeanList.get(1)));
-			ucb2 = Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(1));
-			ucbLabel2.setText("UCB: " + Double.toString(rewardMeanList.get(1) + ucb2));
+			ucb2 = rewardMeanList.get(1) + Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(1));
+			ucbLabel2.setText("UCB: " + Double.toString(ucb2));
 		}
-		double idealExpectedReward = trialTime*prob1;
+		double idealExpectedReward = trialTime*setProb1;
 		double accutualExpectedReward = 0;
-		accutualExpectedReward += trialTimeList.get(0)*prob1;
-		accutualExpectedReward += trialTimeList.get(1)*prob2;
+		accutualExpectedReward += trialTimeList.get(0)*setProb1;
+		accutualExpectedReward += trialTimeList.get(1)*setProb2;
 		regretLabel1.setText("Regret:" + Double.toString(idealExpectedReward - accutualExpectedReward));
 		if (ucb1 > ucb2) {
 			banditLabel1.setText("Bandit1 *");
