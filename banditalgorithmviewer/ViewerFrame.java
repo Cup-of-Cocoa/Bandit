@@ -1,34 +1,20 @@
 package banditalgorithmviewer;
 
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-import bandit.*;
-
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
-
-import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextField;
 
-import bandit.AgentUCBVariance;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
+import bandit.BanditBernoulli;
 
 public class ViewerFrame extends JFrame implements ActionListener{
-	//–ğ‚É—§‚Â‚©‚Í‚í‚©‚ç‚È‚¢‚¯‚ÇUCBƒAƒ‹ƒSƒŠƒYƒ€‚ğ‰Â‹‰»iHj‚µ‚Ä‚İ‚½
+	//ï¿½ï¿½ï¿½É—ï¿½ï¿½Â‚ï¿½ï¿½Í‚í‚©ï¿½ï¿½È‚ï¿½ï¿½ï¿½ï¿½ï¿½UCBï¿½Aï¿½ï¿½ï¿½Sï¿½ï¿½ï¿½Yï¿½ï¿½ï¿½ï¿½ï¿½Âï¿½ï¿½ï¿½ï¿½iï¿½Hï¿½jï¿½ï¿½ï¿½Ä‚İ‚ï¿½
 	private static final long serialVersionUID = 1L;
 
 	JPanel banditPanel1, banditPanel2;
@@ -39,11 +25,13 @@ public class ViewerFrame extends JFrame implements ActionListener{
 	BanditBernoulli bandit1 = new BanditBernoulli(0.9);
 	BanditBernoulli bandit2 = new BanditBernoulli(0.6);
 
+
+
 	double ucb1=0, ucb2=0;
 	int trialTime = 0;
 
-	List<Double> rewardMeanList = new ArrayList<Double>();//ŠeƒXƒƒbƒg‚ª¡‚Ü‚Å‚É”ro‚µ‚½“¾“_‚Ì•½‹Ï
-	List<Integer> trialTimeList = new ArrayList<Integer>();//ŠeƒXƒƒbƒg‚Ìs‰ñ”
+	List<Double> rewardMeanList = new ArrayList<Double>();//ï¿½eï¿½Xï¿½ï¿½ï¿½bï¿½gï¿½ï¿½ï¿½ï¿½ï¿½Ü‚Å‚É”rï¿½oï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½_ï¿½Ì•ï¿½ï¿½ï¿½
+	List<Integer> trialTimeList = new ArrayList<Integer>();//ï¿½eï¿½Xï¿½ï¿½ï¿½bï¿½gï¿½Ìï¿½ï¿½sï¿½ï¿½
 
 
 	public ViewerFrame() {
@@ -64,7 +52,7 @@ public class ViewerFrame extends JFrame implements ActionListener{
 		setLayout(new GridLayout(1,2));
 		setSize(500, 500);
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//~‚ğ‰Ÿ‚µ‚½‚çƒEƒBƒ“ƒhƒE‚ğ•Â‚¶‚é
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//ï¿½~ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Eï¿½Bï¿½ï¿½ï¿½hï¿½Eï¿½ï¿½Â‚ï¿½ï¿½ï¿½
 
 		banditPanel1 = new JPanel(new GridLayout(7,1));
 		banditLabel1 = new JLabel("Bandit1");
@@ -114,29 +102,29 @@ public class ViewerFrame extends JFrame implements ActionListener{
 
 		if(e.getActionCommand().equals("bandit1")) {
 			double reward = bandit1.play();
-			if(reward == 1.0) resultLabel1.setText("‚ ‚½‚è");
-			else resultLabel1.setText("‚Í‚¸‚ê");
+			if(reward == 1.0) resultLabel1.setText("ã‚ãŸã‚Š");
+			else resultLabel1.setText("ã¯ãšã‚Œ");
 			trialTimeList.set(0, trialTimeList.get(0)+1);
 			trialTime1.setText("Trial1: " + Integer.toString(trialTimeList.get(0)));
 			double newRewardMean = rewardMeanList.get(0)*(trialTimeList.get(0)-1)+reward;
 			rewardMeanList.set(0, newRewardMean/(double)trialTimeList.get(0));
 			rewardMean1.setText("Reward: " + Double.toString(rewardMeanList.get(0)));
-			if (trialTime == 1) ucb1 = Math.sqrt((2*Math.log(trialTime+1))/(double)trialTimeList.get(0));
-			else  ucb1 = Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(0));
-			ucbLabel1.setText("UCB: " + Double.toString(rewardMeanList.get(0) + ucb1));
+			if (trialTime == 1) ucb1 = rewardMeanList.get(0) + Math.sqrt((2*Math.log(trialTime+1))/(double)trialTimeList.get(0));
+			else  ucb1 = rewardMeanList.get(0) + Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(0));
+			ucbLabel1.setText("UCB: " + Double.toString(ucb1));
 
 		}
 		else if(e.getActionCommand().equals("bandit2")) {
 			double reward = bandit2.play();
-			if(reward == 1.0) resultLabel2.setText("‚ ‚½‚è");
-			else resultLabel2.setText("‚Í‚¸‚ê");
+			if(reward == 1.0) resultLabel2.setText("ã‚ãŸã‚Š");
+			else resultLabel2.setText("ã¯ãšã‚Œ");
 			trialTimeList.set(1, trialTimeList.get(1)+1);
 			trialTime2.setText("Trial2: " + Integer.toString(trialTimeList.get(1)));
 			double newRewardMean = rewardMeanList.get(1)*(trialTimeList.get(1)-1)+reward;
 			rewardMeanList.set(1, newRewardMean/(double)trialTimeList.get(1));
 			rewardMean2.setText("Reward: " + Double.toString(rewardMeanList.get(1)));
-			ucb2 = Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(1));
-			ucbLabel2.setText("UCB: " + Double.toString(rewardMeanList.get(1) + ucb2));
+			ucb2 = rewardMeanList.get(1) + Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(1));
+			ucbLabel2.setText("UCB: " + Double.toString(ucb2));
 		}
 		double idealExpectedReward = trialTime*0.9;
 		double accutualExpectedReward = 0;
