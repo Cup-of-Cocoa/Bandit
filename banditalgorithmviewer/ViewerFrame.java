@@ -141,7 +141,7 @@ public class ViewerFrame extends JFrame implements ActionListener{
 			ucb2 = rewardMeanList.get(1) + Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(1));
 			ucbLabel2.setText("UCB: " + Double.toString(ucb2));
 		}
-		double idealExpectedReward = trialTime*setProb1;
+		double idealExpectedReward = trialTime*prob1;
 		double accutualExpectedReward = 0;
 		accutualExpectedReward += trialTimeList.get(0)*setProb1;
 		accutualExpectedReward += trialTimeList.get(1)*setProb2;
