@@ -23,6 +23,8 @@ public class ViewerFrame extends JFrame implements ActionListener{
 	JLabel trialTime1, trialTime2, rewardMean1, rewardMean2, regretBound;
 	JButton banditButton1, banditButton2;
 
+
+
 	final double prob1 = 0.55;
 	final double prob2 = 0.45;
 	final double delta = prob1 - prob2;
@@ -120,33 +122,26 @@ public class ViewerFrame extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e){
 		trialTime++;
 		tr.setText("Trial: " + Integer.toString(trialTime));
-		int selectedBanditIndex;
+		int selectedBanditIndex = -1;
 		if(e.getActionCommand().equals("bandit1")) {
-			double reward = bandit1.play();
-			if(reward == 1.0) resultLabel1.setText("あたり");
-			else resultLabel1.setText("はずれ");
-			trialTimeList.set(0, trialTimeList.get(0)+1);
-			trialTime1.setText("Trial1: " + Integer.toString(trialTimeList.get(0)));
-			double newRewardMean = rewardMeanList.get(0)*(trialTimeList.get(0)-1)+reward;
-			rewardMeanList.set(0, newRewardMean/(double)trialTimeList.get(0));
-			rewardMean1.setText("Reward: " + Double.toString(rewardMeanList.get(0)));
-			if (trialTime == 1) ucb1 = Math.sqrt((2*Math.log(trialTime+1))/(double)trialTimeList.get(0));
-			else  ucb1 = rewardMeanList.get(0) + Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(0));
-			ucbLabel1.setText("UCB: " + Double.toString(ucb1));
+			selectedBanditIndex = 0;
 
 		}
 		else if(e.getActionCommand().equals("bandit2")) {
-			double reward = bandit2.play();
-			if(reward == 1.0) resultLabel2.setText("あたり");
-			else resultLabel2.setText("はずれ");
-			trialTimeList.set(1, trialTimeList.get(1)+1);
-			trialTime2.setText("Trial2: " + Integer.toString(trialTimeList.get(1)));
-			double newRewardMean = rewardMeanList.get(1)*(trialTimeList.get(1)-1)+reward;
-			rewardMeanList.set(1, newRewardMean/(double)trialTimeList.get(1));
-			rewardMean2.setText("Reward: " + Double.toString(rewardMeanList.get(1)));
-			ucb2 = rewardMeanList.get(1) + Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(1));
-			ucbLabel2.setText("UCB: " + Double.toString(ucb2));
+			selectedBanditIndex = 1;
 		}
+		double reward = bandits.get(selectedBanditIndex).play();
+		if(reward == 1.0) resultLabel1.setText("あたり");
+		else resultLabel1.setText("はずれ");
+		trialTimeList.set(0, trialTimeList.get(selectedBanditIndex)+1);
+		trialTime1.setText("Trial1: " + Integer.toString(trialTimeList.get(selectedBanditIndex)));
+		double newRewardMean = rewardMeanList.get(0)*(trialTimeList.get(selectedBanditIndex)-1)+reward;
+		rewardMeanList.set(0, newRewardMean/(double)trialTimeList.get(selectedBanditIndex));
+		rewardMean1.setText("Reward: " + Double.toString(rewardMeanList.get(selectedBanditIndex)));
+		if (trialTime == 1) ucb1 = Math.sqrt((2*Math.log(trialTime+1))/(double)trialTimeList.get(selectedBanditIndex));
+		else  ucb1 = rewardMeanList.get(0) + Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(selectedBanditIndex));
+		ucbLabel1.setText("UCB: " + Double.toString(ucb1));
+
 		double idealExpectedReward = trialTime*prob1;
 		double accutualExpectedReward = 0;
 		accutualExpectedReward += trialTimeList.get(0)*setProb1;
