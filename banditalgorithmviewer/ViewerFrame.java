@@ -20,11 +20,12 @@ public class ViewerFrame extends JFrame implements ActionListener{
 
 	JPanel banditPanel1, banditPanel2;
 	JLabel tr, banditLabel1, banditLabel2, resultLabel1, resultLabel2, ucbLabel1, ucbLabel2, regretLabel1, regretLabel2;
-	JLabel trialTime1, trialTime2, rewardMean1, rewardMean2;
+	JLabel trialTime1, trialTime2, rewardMean1, rewardMean2, regretBound;
 	JButton banditButton1, banditButton2;
 
 	final double prob1 = 0.55;
 	final double prob2 = 0.45;
+	final double delta = prob1 - prob2;
 	double setProb1;
 	double setProb2;
 	BanditBernoulli bandit1;
@@ -69,7 +70,7 @@ public class ViewerFrame extends JFrame implements ActionListener{
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//×を押したらウィンドウを閉じる
 
-		banditPanel1 = new JPanel(new GridLayout(7,1));
+		banditPanel1 = new JPanel(new GridLayout(8,1));
 		banditLabel1 = new JLabel("Bandit1");
 		banditPanel1.add(banditLabel1);
 		banditButton1 = new JButton("Bandit1");
@@ -86,9 +87,11 @@ public class ViewerFrame extends JFrame implements ActionListener{
 		banditPanel1.add(trialTime1);
 		regretLabel1 = new JLabel("Regret: ");
 		banditPanel1.add(regretLabel1);
+		regretBound = new JLabel("Bound: ");
+		banditPanel1.add(regretBound);
 		add(banditPanel1);
 
-		banditPanel2 = new JPanel(new GridLayout(7,1));
+		banditPanel2 = new JPanel(new GridLayout(8,1));
 		banditLabel2 = new JLabel("Bandit2");
 		banditPanel2.add(banditLabel2);
 		banditButton2 = new JButton("Bandit2");
@@ -163,6 +166,7 @@ public class ViewerFrame extends JFrame implements ActionListener{
 				banditButton2.setEnabled(true);
 			}
 		}
+		regretBound.setText("Bound: " + Double.toString(8*(Math.log(trialTime)/delta) + (1 + Math.PI*Math.PI/3)*delta));
 	}
 
 	public static void main(String[] args) {
