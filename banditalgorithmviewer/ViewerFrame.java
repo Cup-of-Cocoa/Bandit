@@ -28,6 +28,7 @@ public class ViewerFrame extends JFrame implements ActionListener{
 	final double delta = prob1 - prob2;
 	double setProb1;
 	double setProb2;
+	List<BanditBernoulli> bandits = new ArrayList<BanditBernoulli>();
 	BanditBernoulli bandit1;
 	BanditBernoulli bandit2;
 
@@ -51,6 +52,8 @@ public class ViewerFrame extends JFrame implements ActionListener{
 			bandit2 = new BanditBernoulli(prob1);
 			setProb2 = prob1;
 		}
+		bandits.add(bandit1);
+		bandits.add(bandit2);
 		rewardMeanList.add(0.0);
 		rewardMeanList.add(0.0);
 		trialTimeList.add(0);
@@ -117,7 +120,7 @@ public class ViewerFrame extends JFrame implements ActionListener{
 	public void actionPerformed(ActionEvent e){
 		trialTime++;
 		tr.setText("Trial: " + Integer.toString(trialTime));
-
+		int selectedBanditIndex;
 		if(e.getActionCommand().equals("bandit1")) {
 			double reward = bandit1.play();
 			if(reward == 1.0) resultLabel1.setText("あたり");
