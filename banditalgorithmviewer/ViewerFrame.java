@@ -19,19 +19,29 @@ public class ViewerFrame extends JFrame implements ActionListener{
 	private static final long serialVersionUID = 1L;
 
 	JPanel banditPanel1, banditPanel2;
-	JLabel tr, banditLabel1, banditLabel2, resultLabel1, resultLabel2, ucbLabel1, ucbLabel2, regretLabel1, regretLabel2;
-	JLabel trialTime1, trialTime2, rewardMean1, rewardMean2, regretBound;
+	JLabel totalTrialLabel, banditLabel1, banditLabel2, regretLabel, regretBound;
+
+	JLabel trialTime1, trialTime2;
+	List<JLabel> trialTimes = new ArrayList<JLabel>();
+	JLabel resultLabel1, resultLabel2;
+	List<JLabel> resultLabels = new ArrayList<JLabel>();
+	JLabel rewardMeanLabel1, rewardMeanLabel2;
+	List<JLabel> rewardMeans = new ArrayList<JLabel>();
+	JLabel ucbLabel1, ucbLabel2;
+	List<JLabel> ucbLabels = new ArrayList<JLabel> ();
+
 	JButton banditButton1, banditButton2;
 
-	final double prob1 = 0.55;
-	final double prob2 = 0.45;
+	final double prob1 = 0.9;
+	final double prob2 = 0.8;
 	final double delta = prob1 - prob2;
 	double setProb1;
 	double setProb2;
-	BanditBernoulli bandit1;
-	BanditBernoulli bandit2;
+	List<BanditBernoulli> bandits = new ArrayList<BanditBernoulli>();
+	BanditBernoulli bandit1, bandit2;
 
 	double ucb1=0, ucb2=0;
+	List<Double> ucbs = new ArrayList<Double>();
 	int trialTime = 0;
 
 	List<Double> rewardMeanList = new ArrayList<Double>();//各スロットが今までに排出した得点の平均
@@ -51,6 +61,8 @@ public class ViewerFrame extends JFrame implements ActionListener{
 			bandit2 = new BanditBernoulli(prob1);
 			setProb2 = prob1;
 		}
+		bandits.add(bandit1);
+		bandits.add(bandit2);
 		rewardMeanList.add(0.0);
 		rewardMeanList.add(0.0);
 		trialTimeList.add(0);
@@ -81,12 +93,12 @@ public class ViewerFrame extends JFrame implements ActionListener{
 		banditPanel1.add(resultLabel1);
 		ucbLabel1 = new JLabel("UCB: ");
 		banditPanel1.add(ucbLabel1);
-		rewardMean1 = new JLabel("Reward: ");
-		banditPanel1.add(rewardMean1);
+		rewardMeanLabel1 = new JLabel("Reward: ");
+		banditPanel1.add(rewardMeanLabel1);
 		trialTime1 = new JLabel("Trial1" + Integer.toString(trialTimeList.get(0)));
 		banditPanel1.add(trialTime1);
-		regretLabel1 = new JLabel("Regret: ");
-		banditPanel1.add(regretLabel1);
+		regretLabel = new JLabel("Regret: ");
+		banditPanel1.add(regretLabel);
 		regretBound = new JLabel("Bound: ");
 		banditPanel1.add(regretBound);
 		add(banditPanel1);
@@ -102,13 +114,24 @@ public class ViewerFrame extends JFrame implements ActionListener{
 		banditPanel2.add(resultLabel2);
 		ucbLabel2 = new JLabel("UCB: ");
 		banditPanel2.add(ucbLabel2);
-		rewardMean2 = new JLabel("Reward: ");
-		banditPanel2.add(rewardMean2);
+		rewardMeanLabel2 = new JLabel("Reward: ");
+		banditPanel2.add(rewardMeanLabel2);
 		trialTime2 = new JLabel("Trial2" + Integer.toString(trialTimeList.get(1)));
 		banditPanel2.add(trialTime2);
-		tr = new JLabel("Trial: " + Integer.toString(trialTime));
-		banditPanel2.add(tr);
+		totalTrialLabel = new JLabel("Trial: " + Integer.toString(trialTime));
+		banditPanel2.add(totalTrialLabel);
 		add(banditPanel2);
+
+		trialTimes.add(trialTime1);
+		trialTimes.add(trialTime2);
+		resultLabels.add(resultLabel1);
+		resultLabels.add(resultLabel2);
+		ucbs.add(ucb1);
+		ucbs.add(ucb2);
+		rewardMeans.add(rewardMeanLabel1);
+		rewardMeans.add(rewardMeanLabel2);
+		ucbLabels.add(ucbLabel1);
+		ucbLabels.add(ucbLabel2);
 
 		banditButton1.doClick();
 		banditButton2.doClick();
@@ -116,40 +139,27 @@ public class ViewerFrame extends JFrame implements ActionListener{
 
 	public void actionPerformed(ActionEvent e){
 		trialTime++;
-		tr.setText("Trial: " + Integer.toString(trialTime));
+		totalTrialLabel.setText("TotalTrial: " + Integer.toString(trialTime));
 
-		if(e.getActionCommand().equals("bandit1")) {
-			double reward = bandit1.play();
-			if(reward == 1.0) resultLabel1.setText("あたり");
-			else resultLabel1.setText("はずれ");
-			trialTimeList.set(0, trialTimeList.get(0)+1);
-			trialTime1.setText("Trial1: " + Integer.toString(trialTimeList.get(0)));
-			double newRewardMean = rewardMeanList.get(0)*(trialTimeList.get(0)-1)+reward;
-			rewardMeanList.set(0, newRewardMean/(double)trialTimeList.get(0));
-			rewardMean1.setText("Reward: " + Double.toString(rewardMeanList.get(0)));
-			if (trialTime == 1) ucb1 = Math.sqrt((2*Math.log(trialTime+1))/(double)trialTimeList.get(0));
-			else  ucb1 = rewardMeanList.get(0) + Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(0));
-			ucbLabel1.setText("UCB: " + Double.toString(ucb1));
+		int selcted = Integer.parseInt(e.getActionCommand().substring(6)) -1;
+		double reward = bandits.get(selcted).play();
+		if(reward == 1.0) resultLabels.get(selcted).setText("あたり");
+		else resultLabels.get(selcted).setText("はずれ");
+		trialTimeList.set(selcted, trialTimeList.get(selcted)+1);
+		trialTimes.get(selcted).setText("Trial: " + Integer.toString(trialTimeList.get(selcted)));
+		double newRewardMean = rewardMeanList.get(selcted)*(trialTimeList.get(selcted)-1)+reward;
+		rewardMeanList.set(selcted, newRewardMean/(double)trialTimeList.get(selcted));
+		rewardMeans.get(selcted).setText("Reward: " + Double.toString(rewardMeanList.get(selcted)));
+		if (trialTime == 1) ucbs.set(selcted, Math.sqrt((2*Math.log(trialTime+1))/(double)trialTimeList.get(selcted))) ;
+		else  ucbs.set(selcted, rewardMeanList.get(selcted) + Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(selcted)));
+		ucbLabels.get(selcted).setText("UCB: " + Double.toString(ucbs.get(selcted)));
 
-		}
-		else if(e.getActionCommand().equals("bandit2")) {
-			double reward = bandit2.play();
-			if(reward == 1.0) resultLabel2.setText("あたり");
-			else resultLabel2.setText("はずれ");
-			trialTimeList.set(1, trialTimeList.get(1)+1);
-			trialTime2.setText("Trial2: " + Integer.toString(trialTimeList.get(1)));
-			double newRewardMean = rewardMeanList.get(1)*(trialTimeList.get(1)-1)+reward;
-			rewardMeanList.set(1, newRewardMean/(double)trialTimeList.get(1));
-			rewardMean2.setText("Reward: " + Double.toString(rewardMeanList.get(1)));
-			ucb2 = rewardMeanList.get(1) + Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(1));
-			ucbLabel2.setText("UCB: " + Double.toString(ucb2));
-		}
 		double idealExpectedReward = trialTime*prob1;
 		double accutualExpectedReward = 0;
 		accutualExpectedReward += trialTimeList.get(0)*setProb1;
 		accutualExpectedReward += trialTimeList.get(1)*setProb2;
-		regretLabel1.setText("Regret:" + Double.toString(idealExpectedReward - accutualExpectedReward));
-		if (ucb1 > ucb2) {
+		regretLabel.setText("Regret:" + Double.toString(idealExpectedReward - accutualExpectedReward));
+		if (ucbs.get(0) > ucbs.get(1)) {
 			banditLabel1.setText("Bandit1 *");
 			banditLabel2.setText("Bandit2");
 			if(trialTime >= 2) {
