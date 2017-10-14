@@ -32,8 +32,8 @@ public class ViewerFrame extends JFrame implements ActionListener{
 
 	JButton banditButton1, banditButton2;
 
-	final double prob1 = 0.9;
-	final double prob2 = 0.8;
+	final double prob1 = 0.55;
+	final double prob2 = 0.45;
 	final double delta = prob1 - prob2;
 	double setProb1;
 	double setProb2;
@@ -67,14 +67,6 @@ public class ViewerFrame extends JFrame implements ActionListener{
 		rewardMeanList.add(0.0);
 		trialTimeList.add(0);
 		trialTimeList.add(0);
-		/*double reward1 = bandit1.play();
-		rewardMeanList.add(bandit1.play());
-		rewardMeanList.add(bandit2.play());
-		trialTimeList.add(1);
-		trialTimeList.add(1);
-		trialTime++;trialTime++;
-		double ucb1 = Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(0));
-		double ucb2 = Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(1));*/
 
 		setTitle("Viewer");
 		setLayout(new GridLayout(1,2));
@@ -135,24 +127,28 @@ public class ViewerFrame extends JFrame implements ActionListener{
 
 		banditButton1.doClick();
 		banditButton2.doClick();
+		banditButton1.doClick();
 	}
 
 	public void actionPerformed(ActionEvent e){
 		trialTime++;
 		totalTrialLabel.setText("TotalTrial: " + Integer.toString(trialTime));
 
-		int selcted = Integer.parseInt(e.getActionCommand().substring(6)) -1;
-		double reward = bandits.get(selcted).play();
-		if(reward == 1.0) resultLabels.get(selcted).setText("あたり");
-		else resultLabels.get(selcted).setText("はずれ");
-		trialTimeList.set(selcted, trialTimeList.get(selcted)+1);
-		trialTimes.get(selcted).setText("Trial: " + Integer.toString(trialTimeList.get(selcted)));
-		double newRewardMean = rewardMeanList.get(selcted)*(trialTimeList.get(selcted)-1)+reward;
-		rewardMeanList.set(selcted, newRewardMean/(double)trialTimeList.get(selcted));
-		rewardMeans.get(selcted).setText("Reward: " + Double.toString(rewardMeanList.get(selcted)));
-		if (trialTime == 1) ucbs.set(selcted, Math.sqrt((2*Math.log(trialTime+1))/(double)trialTimeList.get(selcted))) ;
-		else  ucbs.set(selcted, rewardMeanList.get(selcted) + Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(selcted)));
-		ucbLabels.get(selcted).setText("UCB: " + Double.toString(ucbs.get(selcted)));
+		int selected = Integer.parseInt(e.getActionCommand().substring(6)) -1;
+		double reward = bandits.get(selected).play();
+		if(reward == 1.0) resultLabels.get(selected).setText("あたり");
+		else resultLabels.get(selected).setText("はずれ");
+		trialTimeList.set(selected, trialTimeList.get(selected)+1);
+		trialTimes.get(selected).setText("Trial: " + Integer.toString(trialTimeList.get(selected)));
+		double newRewardMean = rewardMeanList.get(selected)*(trialTimeList.get(selected)-1)+reward;
+		rewardMeanList.set(selected, newRewardMean/(double)trialTimeList.get(selected));
+		rewardMeans.get(selected).setText("Reward: " + Double.toString(rewardMeanList.get(selected)));
+		double V = rewardMeanList.get(selected) * (1.0 - rewardMeanList.get(selected));
+		double vjs = V + Math.sqrt((2*Math.log(trialTime))/trialTimeList.get(selected));
+		double ucb_tuned_right = Math.sqrt((Math.log(trialTime)/trialTimeList.get(selected))*Math.min(1/4, vjs));
+		//double ucb_right = Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(selected));
+		ucbs.set(selected, rewardMeanList.get(selected) + ucb_tuned_right);
+		ucbLabels.get(selected).setText("UCB: " + Double.toString(ucbs.get(selected)));
 
 		double idealExpectedReward = trialTime*prob1;
 		double accutualExpectedReward = 0;
