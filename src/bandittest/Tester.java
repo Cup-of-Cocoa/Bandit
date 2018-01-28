@@ -19,7 +19,7 @@ public class Tester {
 	Date date = new Date();
 	SimpleDateFormat dateForFileName = new SimpleDateFormat("yyyyMMddHHmmss");
 
-	public Tester(){
+	public Tester() {
 		rewardFileName = "";
 		regretFileName = "";
 		accuracyFileName = "";
@@ -27,7 +27,7 @@ public class Tester {
 		dirName = DEFALT_FOLDER + dateName;
 	}
 
-	public Tester(String dirName){
+	public Tester(String dirName) {
 		rewardFileName = "";
 		regretFileName = "";
 		accuracyFileName = "";
@@ -35,7 +35,7 @@ public class Tester {
 		this.dirName = DEFALT_FOLDER + dateName + dirName;
 	}
 
-	public Tester(String rFileName, String regFileName, String aFileName){
+	public Tester(String rFileName, String regFileName, String aFileName) {
 		rewardFileName = rFileName;
 		regretFileName = regFileName;
 		accuracyFileName = aFileName;
@@ -55,17 +55,18 @@ public class Tester {
 		List<Double> accuracyRateDataMean = new ArrayList<Double>();
 
 		a.run();
-		for(int i=0; i< a.getNUM_OF_TRIAL(); i++) {
+		for (int i = 0; i < a.getNUM_OF_TRIAL(); i++) {
 			totalRewardDataMean.add(a.getTotalRewardData().get(i));
 			totalRegretDataMean.add(a.getTotalRegretData().get(i));
 			accuracyRateDataMean.add(a.getAccuracyRateData().get(i));
 		}
-		for(int i=1; i < 100; i++) {
+		for (int i = 1; i < 100; i++) {
 			a.rerun();
-			for(int j=0; j < a.getNUM_OF_TRIAL(); j++) {
-				totalRewardDataMean.set(j, (totalRewardDataMean.get(j)*i + a.getTotalRewardData().get(j))/(i+1));
-				totalRegretDataMean.set(j, (totalRegretDataMean.get(j)*i + a.getTotalRegretData().get(j))/(i+1));
-				accuracyRateDataMean.set(j, (accuracyRateDataMean.get(j)*i + a.getAccuracyRateData().get(j))/(i+1));
+			for (int j = 0; j < a.getNUM_OF_TRIAL(); j++) {
+				totalRewardDataMean.set(j, (totalRewardDataMean.get(j) * i + a.getTotalRewardData().get(j)) / (i + 1));
+				totalRegretDataMean.set(j, (totalRegretDataMean.get(j) * i + a.getTotalRegretData().get(j)) / (i + 1));
+				accuracyRateDataMean.set(j,
+						(accuracyRateDataMean.get(j) * i + a.getAccuracyRateData().get(j)) / (i + 1));
 			}
 		}
 
@@ -79,19 +80,18 @@ public class Tester {
 			File accuracyData = new File(dirName + "\\" + accuracyFileName + "accuracy");
 			FileWriter accuracy = new FileWriter(accuracyData);
 			for (int i = 0; i < a.getNUM_OF_TRIAL(); i++) {
-				reward.write(i+1 + " " + Double.toString(totalRewardDataMean.get(i)) + "\r\n");
-				regret.write(i+1 + " " + Double.toString(totalRegretDataMean.get(i)) + "\r\n");
-				accuracy.write(i+1 + " " + Double.toString(accuracyRateDataMean.get(i)) + "\r\n");
-			}	
+				reward.write(i + 1 + " " + Double.toString(totalRewardDataMean.get(i)) + "\r\n");
+				regret.write(i + 1 + " " + Double.toString(totalRegretDataMean.get(i)) + "\r\n");
+				accuracy.write(i + 1 + " " + Double.toString(accuracyRateDataMean.get(i)) + "\r\n");
+			}
 			reward.close();
 			regret.close();
 			accuracy.close();
 			return ("正常に終了しました。");
-		}catch (IOException e) {			
-			if(!(new File(DEFALT_FOLDER).exists())) { 
+		} catch (IOException e) {
+			if (!(new File(DEFALT_FOLDER).exists())) {
 				return ("デフォルトのフォルダが存在しません");
-			}
-			else {
+			} else {
 				return ("ファイルを作成できません");
 			}
 		}
@@ -99,7 +99,7 @@ public class Tester {
 
 	public static void main(String args[]) {
 		Tester t = new Tester();
-		double probs[] = {0.9,0.6,0.6};
+		double probs[] = { 0.9, 0.6, 0.6 };
 		t.test(new AgentUCBVariance(new BanditMaker().makeBanditBernoulli(probs), 100000));
 	}
 }

@@ -18,7 +18,7 @@ import javax.swing.JTextField;
 
 import bandit.AgentUCBVariance;
 
-public class TesterFrame extends JFrame implements ActionListener{
+public class TesterFrame extends JFrame implements ActionListener {
 	//ウィンドウでGUIによりバンディットアルゴリズムのテストに使うスロットなどを定義する
 
 	private static final long serialVersionUID = 1L;
@@ -26,16 +26,15 @@ public class TesterFrame extends JFrame implements ActionListener{
 	JPanel distroPanel, algoPanel, trialPanel, dirNamePanel, statusPanel, probPanel;
 	JLabel distroLabel, algoLabel, statusLabel, statusLabel1, statusLabel2, trialLabel, dirNameLabel, probLabel;
 	JLabel spaceLabel = new JLabel("");
-	JTextField  trialField, dirNameField, probField;
+	JTextField trialField, dirNameField, probField;
 	JButton okButton;
 	ButtonGroup distroGroup, algoGroup;
 	JRadioButton bernoulliButton, gaussianButton, ucb1Button, vucbButton, epdButton;
-	final static double[] DEFALT_PROBS = {0.9, 0.6};
-
+	final static double[] DEFALT_PROBS = { 0.9, 0.6 };
 
 	public TesterFrame() {
 		setTitle("Tester");
-		setLayout(new GridLayout(8,1));
+		setLayout(new GridLayout(8, 1));
 		setSize(350, 400);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//×を押したらウィンドウを閉じる
@@ -71,7 +70,7 @@ public class TesterFrame extends JFrame implements ActionListener{
 
 		add(spaceLabel);
 
-		statusPanel = new JPanel(new GridLayout(3,1));
+		statusPanel = new JPanel(new GridLayout(3, 1));
 		statusLabel = new JLabel("STATUS");
 		statusLabel1 = new JLabel("");
 		statusLabel2 = new JLabel("");
@@ -109,7 +108,6 @@ public class TesterFrame extends JFrame implements ActionListener{
 		probPanel.add(probField);
 		add(probPanel);
 
-
 		okButton = new JButton("OK");
 		okButton.setActionCommand("OK");
 		okButton.addActionListener(this);
@@ -138,46 +136,41 @@ public class TesterFrame extends JFrame implements ActionListener{
 
 		//バンディットマシンの分布
 		double probs[] = DEFALT_PROBS;
-		if(!probField.getText().equals("")) {			
+		if (!probField.getText().equals("")) {
 			String probString[] = probField.getText().split(" ");
 			probs = new double[probString.length];
-			for(int i=0; i < probString.length; i++) {
+			for (int i = 0; i < probString.length; i++) {
 				probs[i] = Double.parseDouble(probString[i]);
 			}
-		}	
+		}
 
 		//分布をラジオボタンから取得する
-		if(bernoulliButton.isSelected()) {
+		if (bernoulliButton.isSelected()) {
 			testName += "ベルヌーイ分布";
 			banditList = maker.makeBanditBernoulli(probs);
-		}
-		else if(gaussianButton.isSelected()) {
+		} else if (gaussianButton.isSelected()) {
 			statusLabel1.setText("Normalは未実装です");
 			return;
-		}
-		else {
+		} else {
 			statusLabel1.setText("スロットの分布が選択されていません");
 			return;
 		}
 		//アルゴリズムをラジオボタンから取得する
 
-		if(ucb1Button.isSelected()) {
+		if (ucb1Button.isSelected()) {
 			agent = new AgentUCB1(banditList, num_of_trial);
 			dirName += "UCB1";
 			testName += " UCB1アルゴリズム";
 			statusLabel1.setText(testName);
-		}
-		else if(vucbButton.isSelected()) {
+		} else if (vucbButton.isSelected()) {
 			agent = new AgentUCBVariance(banditList, num_of_trial);
 			dirName += "VUCB";
 			testName += " VUCBアルゴリズム";
-		}
-		else if(epdButton.isSelected()) {
+		} else if (epdButton.isSelected()) {
 			agent = new AgentEpsilonDecreasing(banditList, num_of_trial);
 			dirName += "ε-Greedy";
 			testName += " ε-Greedyアルゴリズム";
-		}
-		else {
+		} else {
 			statusLabel1.setText("アルゴリズムが選択されていません");
 			return;
 		}
@@ -187,17 +180,16 @@ public class TesterFrame extends JFrame implements ActionListener{
 		statusLabel2.setText(tmp);
 	}
 
-
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("OK")) {
 			testSetting();
-		}
-		else if (e.getActionCommand().equals("PROB") || e.getActionCommand().equals("TRIAL") || e.getActionCommand().equals("DIRNAME")) {
+		} else if (e.getActionCommand().equals("PROB") || e.getActionCommand().equals("TRIAL")
+				|| e.getActionCommand().equals("DIRNAME")) {
 			testSetting();
 		}
 	}
 
-	public static void main(String args[]){ 
+	public static void main(String args[]) {
 		TesterFrame tf = new TesterFrame();
 		tf.setVisible(true);
 	}

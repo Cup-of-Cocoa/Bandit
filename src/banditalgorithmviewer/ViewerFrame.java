@@ -13,8 +13,7 @@ import javax.swing.JPanel;
 
 import bandit.BanditBernoulli;
 
-
-public class ViewerFrame extends JFrame implements ActionListener{
+public class ViewerFrame extends JFrame implements ActionListener {
 	//役に立つかはわからないけどUCBアルゴリズムを可視化（？）してみた
 	private static final long serialVersionUID = 1L;
 
@@ -28,7 +27,7 @@ public class ViewerFrame extends JFrame implements ActionListener{
 	JLabel rewardMeanLabel1, rewardMeanLabel2;
 	List<JLabel> rewardMeans = new ArrayList<JLabel>();
 	JLabel ucbLabel1, ucbLabel2;
-	List<JLabel> ucbLabels = new ArrayList<JLabel> ();
+	List<JLabel> ucbLabels = new ArrayList<JLabel>();
 
 	JButton banditButton1, banditButton2;
 
@@ -40,13 +39,12 @@ public class ViewerFrame extends JFrame implements ActionListener{
 	List<BanditBernoulli> bandits = new ArrayList<BanditBernoulli>();
 	BanditBernoulli bandit1, bandit2;
 
-	double ucb1=0, ucb2=0;
+	double ucb1 = 0, ucb2 = 0;
 	List<Double> ucbs = new ArrayList<Double>();
 	int trialTime = 0;
 
 	List<Double> rewardMeanList = new ArrayList<Double>();//各スロットが今までに排出した得点の平均
 	List<Integer> trialTimeList = new ArrayList<Integer>();//各スロットの試行回数
-
 
 	public ViewerFrame() {
 		if (Math.random() < 0.5) {
@@ -54,8 +52,7 @@ public class ViewerFrame extends JFrame implements ActionListener{
 			setProb1 = prob1;
 			bandit2 = new BanditBernoulli(prob2);
 			setProb2 = prob2;
-		}
-		else {
+		} else {
 			bandit1 = new BanditBernoulli(prob2);
 			setProb1 = prob2;
 			bandit2 = new BanditBernoulli(prob1);
@@ -69,12 +66,12 @@ public class ViewerFrame extends JFrame implements ActionListener{
 		trialTimeList.add(0);
 
 		setTitle("Viewer");
-		setLayout(new GridLayout(1,2));
+		setLayout(new GridLayout(1, 2));
 		setSize(500, 500);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//×を押したらウィンドウを閉じる
 
-		banditPanel1 = new JPanel(new GridLayout(8,1));
+		banditPanel1 = new JPanel(new GridLayout(8, 1));
 		banditLabel1 = new JLabel("Bandit1");
 		banditPanel1.add(banditLabel1);
 		banditButton1 = new JButton("Bandit1");
@@ -95,7 +92,7 @@ public class ViewerFrame extends JFrame implements ActionListener{
 		banditPanel1.add(regretBound);
 		add(banditPanel1);
 
-		banditPanel2 = new JPanel(new GridLayout(8,1));
+		banditPanel2 = new JPanel(new GridLayout(8, 1));
 		banditLabel2 = new JLabel("Bandit2");
 		banditPanel2.add(banditLabel2);
 		banditButton2 = new JButton("Bandit2");
@@ -130,52 +127,55 @@ public class ViewerFrame extends JFrame implements ActionListener{
 		banditButton1.doClick();
 	}
 
-	public void actionPerformed(ActionEvent e){
+	public void actionPerformed(ActionEvent e) {
 		trialTime++;
 		totalTrialLabel.setText("TotalTrial: " + Integer.toString(trialTime));
 
-		int selected = Integer.parseInt(e.getActionCommand().substring(6)) -1;
+		int selected = Integer.parseInt(e.getActionCommand().substring(6)) - 1;
 		double reward = bandits.get(selected).play();
-		if(reward == 1.0) resultLabels.get(selected).setText("あたり");
-		else resultLabels.get(selected).setText("はずれ");
-		trialTimeList.set(selected, trialTimeList.get(selected)+1);
+		if (reward == 1.0)
+			resultLabels.get(selected).setText("あたり");
+		else
+			resultLabels.get(selected).setText("はずれ");
+		trialTimeList.set(selected, trialTimeList.get(selected) + 1);
 		trialTimes.get(selected).setText("Trial: " + Integer.toString(trialTimeList.get(selected)));
-		double newRewardMean = rewardMeanList.get(selected)*(trialTimeList.get(selected)-1)+reward;
-		rewardMeanList.set(selected, newRewardMean/(double)trialTimeList.get(selected));
+		double newRewardMean = rewardMeanList.get(selected) * (trialTimeList.get(selected) - 1) + reward;
+		rewardMeanList.set(selected, newRewardMean / (double) trialTimeList.get(selected));
 		rewardMeans.get(selected).setText("Reward: " + Double.toString(rewardMeanList.get(selected)));
 		double V = rewardMeanList.get(selected) * (1.0 - rewardMeanList.get(selected));
-		double vjs = V + Math.sqrt((2*Math.log(trialTime))/trialTimeList.get(selected));
-		double ucb_tuned_right = Math.sqrt((Math.log(trialTime)/trialTimeList.get(selected))*Math.min(1/4, vjs));
+		double vjs = V + Math.sqrt((2 * Math.log(trialTime)) / trialTimeList.get(selected));
+		double ucb_tuned_right = Math.sqrt((Math.log(trialTime) / trialTimeList.get(selected)) * Math.min(1 / 4, vjs));
 		//double ucb_right = Math.sqrt((2*Math.log(trialTime))/(double)trialTimeList.get(selected));
 		ucbs.set(selected, rewardMeanList.get(selected) + ucb_tuned_right);
 		ucbLabels.get(selected).setText("UCB: " + Double.toString(ucbs.get(selected)));
 
-		double idealExpectedReward = trialTime*prob1;
+		double idealExpectedReward = trialTime * prob1;
 		double accutualExpectedReward = 0;
-		accutualExpectedReward += trialTimeList.get(0)*setProb1;
-		accutualExpectedReward += trialTimeList.get(1)*setProb2;
+		accutualExpectedReward += trialTimeList.get(0) * setProb1;
+		accutualExpectedReward += trialTimeList.get(1) * setProb2;
 		regretLabel.setText("Regret:" + Double.toString(idealExpectedReward - accutualExpectedReward));
 		if (ucbs.get(0) > ucbs.get(1)) {
 			banditLabel1.setText("Bandit1 *");
 			banditLabel2.setText("Bandit2");
-			if(trialTime >= 2) {
+			if (trialTime >= 2) {
 				banditButton1.setEnabled(true);
 				banditButton2.setEnabled(false);
 			}
 
-		}
-		else {
+		} else {
 			banditLabel1.setText("Bandit1");
 			banditLabel2.setText("Bandit2 *");
-			if(trialTime > 2) {
+			if (trialTime > 2) {
 				banditButton1.setEnabled(false);
 				banditButton2.setEnabled(true);
 			}
 		}
-		regretBound.setText("Bound: " + Double.toString(8*(Math.log(trialTime)/delta) + (1 + Math.PI*Math.PI/3)*delta));
+		regretBound.setText(
+				"Bound: " + Double.toString(8 * (Math.log(trialTime) / delta) + (1 + Math.PI * Math.PI / 3) * delta));
 	}
 
 	public static void main(String[] args) {
-		new ViewerFrame().setVisible(true);;
+		new ViewerFrame().setVisible(true);
+		;
 	}
 }

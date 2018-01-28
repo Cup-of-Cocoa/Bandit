@@ -2,15 +2,15 @@
 
 import java.util.List;
 
-public class AgentEpsilonDecreasing extends Agent{
-	private double c,d;//epsilon-Decreasingアルゴリズム用 ただしdは標本平均から計算する
+public class AgentEpsilonDecreasing extends Agent {
+	private double c, d;//epsilon-Decreasingアルゴリズム用 ただしdは標本平均から計算する
 	private MTRandom r = new MTRandom();
 
 	public AgentEpsilonDecreasing() {
 		super();
 		initialize();
 	}
-	
+
 	public AgentEpsilonDecreasing(List<BanditProb> bandits, int num_of_trial) {
 		super(bandits, num_of_trial);
 		initialize();
@@ -25,11 +25,10 @@ public class AgentEpsilonDecreasing extends Agent{
 	protected int selectBandit() {
 		d = rewardMeanList.get(optimalBanditIndex) - rewardMeanList.get(suboptimalBanditIndex);
 		//確率epsilonでランダムなスロットを選ぶ
-		if (r.nextDouble() > Math.min(1,(c*NUM_OF_BANDIT)/(d*d*trialTime))) {
+		if (r.nextDouble() > Math.min(1, (c * NUM_OF_BANDIT) / (d * d * trialTime))) {
 			return optimalBanditIndex;
-		}
-		else {
-			return Math.abs(r.nextInt())%NUM_OF_BANDIT;
+		} else {
+			return Math.abs(r.nextInt()) % NUM_OF_BANDIT;
 		}
 	}
 
