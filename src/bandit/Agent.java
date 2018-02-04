@@ -1,7 +1,9 @@
 ﻿package bandit;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public abstract class Agent {
 	//Agentには試行回数と用いるスロットマシンの集合を与える。
@@ -11,10 +13,10 @@ public abstract class Agent {
 	protected List<Double> accuracyRateData = new ArrayList<Double>();//各試行時点における「正解率」(=実際に最もよいスロットを選べている割合）のデータ
 	protected List<Double> totalRegretData = new ArrayList<Double>();//各試行時点におけるリグレットのデータ
 
-	protected List<BanditProb> banditList = new ArrayList<BanditProb>();//スロットの集合
-	protected List<Double> rewardMeanList = new ArrayList<Double>();//各スロットが今までに排出した得点の平均
-	protected List<Integer> trialTimeList = new ArrayList<Integer>();//各スロットの試行回数
-	protected List<Double> valueList = new ArrayList<Double>();
+	protected Map<Integer, BanditProb> banditList = new HashMap<Integer, BanditProb>();//スロットの集合
+	protected Map<Integer, Double> rewardMeanList = new HashMap<Integer, Double>();//各スロットが今までに排出した得点の平均
+	protected Map<Integer, Integer> trialTimeList = new HashMap<Integer, Integer>();//各スロットの試行回数
+	protected Map<Integer, Double> valueList = new HashMap<Integer, Double>();
 
 	protected int bestBanditIndex;
 
@@ -26,14 +28,14 @@ public abstract class Agent {
 	protected double totalReward;
 
 	protected Agent() {//テスト用
-		banditList.add(new BanditBernoulli(0.9));
-		banditList.add(new BanditBernoulli(0.6));
+		banditList.put(0, new BanditBernoulli(0.9));
+		banditList.put(1, new BanditBernoulli(0.6));
 		NUM_OF_TRIAL = 1000000;
 		NUM_OF_BANDIT = banditList.size();
 		bestBanditIndex = bestBanditIndex();
 	}
 
-	protected Agent(List<BanditProb> bandits, int num_of_trial) {
+	protected Agent(Map<Integer, BanditProb> bandits, int num_of_trial) {
 		//試行に使うスロット集合と試行回数を引数とし、
 		//各スロットの試行回数と標本平均を初期化する
 		banditList = bandits;
@@ -58,12 +60,12 @@ public abstract class Agent {
 		trialTimeList.clear();
 
 		for (int i = 0; i < NUM_OF_BANDIT; i++) {
-			rewardMeanList.add(0.0);
-			trialTimeList.add(0);
+			rewardMeanList.put(i, 0.0);
+			trialTimeList.put(i, 0);
 		}
 	}
 
-	protected void renewOptimal(List<Double> list) {
+	protected void renewOptimal(Map<Integer, Double> list) {
 		//「最適」なスロットがどれかという情報を更新する
 		//「最適」を選ぶために各スロットにつけられた情報はアルゴリズムにより異なる
 		//引数はその「情報」を持ったリスト
@@ -81,8 +83,8 @@ public abstract class Agent {
 		//ここの更新は共通
 		//UCBなど、他の値の更新が必要なときはオーバーライドする
 		int tmpTrialTime = trialTimeList.get(banditIndex);
-		trialTimeList.set(banditIndex, tmpTrialTime + 1);
-		rewardMeanList.set(banditIndex, (rewardMeanList.get(banditIndex) * (double) tmpTrialTime + reward)
+		trialTimeList.put(banditIndex, tmpTrialTime + 1);
+		rewardMeanList.put(banditIndex, (rewardMeanList.get(banditIndex) * (double) tmpTrialTime + reward)
 				/ (double) trialTimeList.get(banditIndex));
 	}
 
@@ -131,15 +133,15 @@ public abstract class Agent {
 		return totalReward;
 	}
 
-	public List<BanditProb> getBanditList() {
+	public Map<Integer, BanditProb> getBanditList() {
 		return banditList;
 	}
 
-	public List<Double> getRewardMeanList() {
+	public Map<Integer, Double> getRewardMeanList() {
 		return rewardMeanList;
 	}
 
-	public List<Integer> getTrialTimeList() {
+	public Map<Integer, Integer> getTrialTimeList() {
 		return trialTimeList;
 	}
 

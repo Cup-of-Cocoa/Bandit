@@ -1,6 +1,6 @@
 ﻿package bandit;
 
-import java.util.List;
+import java.util.Map;
 
 public class AgentEpsilonDecreasing extends Agent {
 	private double c, d;//epsilon-Decreasingアルゴリズム用 ただしdは標本平均から計算する
@@ -11,7 +11,7 @@ public class AgentEpsilonDecreasing extends Agent {
 		initialize();
 	}
 
-	public AgentEpsilonDecreasing(List<BanditProb> bandits, int num_of_trial) {
+	public AgentEpsilonDecreasing(Map<Integer, BanditProb> bandits, int num_of_trial) {
 		super(bandits, num_of_trial);
 		initialize();
 	}
@@ -33,8 +33,10 @@ public class AgentEpsilonDecreasing extends Agent {
 	}
 
 	public static void main(String args[]) {
-		Agent a = new AgentEpsilonDecreasing();
+		AgentEpsilonDecreasing a = new AgentEpsilonDecreasing();
 		a.run();
-		System.out.println(a.getAccuracyRateData().get(999999));
+		for (int i = 0; i < 100000; i++) {
+			System.out.println(a.getTotalRegretData().get(i));
+		}
 	}
 }

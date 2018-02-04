@@ -1,12 +1,10 @@
 ﻿package bandittest;
 
-import bandit.*;
-
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
+import java.util.Map;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -16,7 +14,11 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import bandit.Agent;
+import bandit.AgentEpsilonDecreasing;
+import bandit.AgentUCB1;
 import bandit.AgentUCBVariance;
+import bandit.BanditProb;
 
 public class TesterFrame extends JFrame implements ActionListener {
 	//ウィンドウでGUIによりバンディットアルゴリズムのテストに使うスロットなどを定義する
@@ -117,7 +119,7 @@ public class TesterFrame extends JFrame implements ActionListener {
 	public void testSetting() {
 		Tester tester = null;
 		Agent agent = null;
-		List<BanditProb> banditList = null;
+		Map<Integer, BanditProb> banditList = null;
 		BanditMaker maker = new BanditMaker();
 		String dirName = dirNameField.getText();
 		int num_of_trial = 0;

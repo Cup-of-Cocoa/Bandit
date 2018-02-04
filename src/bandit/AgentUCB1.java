@@ -1,6 +1,6 @@
 ﻿package bandit;
 
-import java.util.List;
+import java.util.Map;
 
 public class AgentUCB1 extends AgentUCB {
 
@@ -9,7 +9,7 @@ public class AgentUCB1 extends AgentUCB {
 		initialize();
 	}
 
-	public AgentUCB1(List<BanditProb> bandits, int num_of_trial) {
+	public AgentUCB1(Map<Integer, BanditProb> bandits, int num_of_trial) {
 		super(bandits, num_of_trial);
 		initialize();
 	}
@@ -18,7 +18,7 @@ public class AgentUCB1 extends AgentUCB {
 		super.initialize();
 		for (int i = 0; i < NUM_OF_BANDIT; i++) {
 			double ucb = Math.sqrt((2 * Math.log(trialTime)) / (double) trialTimeList.get(i));
-			ucbList.add(rewardMeanList.get(i) + ucb);
+			ucbList.put(i, rewardMeanList.get(i) + ucb);
 		}
 		renewOptimal(ucbList);
 	}
@@ -27,7 +27,7 @@ public class AgentUCB1 extends AgentUCB {
 		super.renewBanditInfo(banditIndex, reward);
 		for (int i = 0; i < NUM_OF_BANDIT; i++) {
 			double ucb = Math.sqrt((2 * Math.log(trialTime)) / (double) trialTimeList.get(i));
-			ucbList.set(i, rewardMeanList.get(i) + ucb);
+			ucbList.put(i, rewardMeanList.get(i) + ucb);
 		}
 	}
 }

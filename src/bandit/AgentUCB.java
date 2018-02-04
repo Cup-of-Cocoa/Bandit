@@ -1,16 +1,16 @@
 ﻿package bandit;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AgentUCB extends Agent {
-	protected List<Double> ucbList = new ArrayList<Double>(); //UCBアルゴリズム用
+	protected Map<Integer, Double> ucbList = new HashMap<Integer, Double>(); //UCBアルゴリズム用
 
 	protected AgentUCB() {
 		super();
 	}
 
-	protected AgentUCB(List<BanditProb> bandits, int num_of_trial) {
+	protected AgentUCB(Map<Integer, BanditProb> bandits, int num_of_trial) {
 		super(bandits, num_of_trial);
 	}
 
@@ -23,8 +23,8 @@ public class AgentUCB extends Agent {
 			trialTime++;
 			accuracyRateData.add((double) (trialTimeList.get(bestBanditIndex)) / (double) trialTime);
 			totalRegretData.add(trialTime * banditList.get(bestBanditIndex).getMean() - totalReward);
-			trialTimeList.set(i, 1);
-			rewardMeanList.set(i, tmpReward);
+			trialTimeList.put(i, 1);
+			rewardMeanList.put(i, tmpReward);
 		}
 		ucbList.clear();
 	}

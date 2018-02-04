@@ -1,15 +1,17 @@
 ﻿package bandittest;
 
-import bandit.*;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import bandit.BanditBernoulli;
+import bandit.BanditProb;
 
 public class BanditMaker {
 
-	public List<BanditProb> makeBanditBernoulli(double probs[]) {
-		List<BanditProb> banditList = new ArrayList<BanditProb>();
+	public Map<Integer, BanditProb> makeBanditBernoulli(double probs[]) {
+		Map<Integer, BanditProb> banditList = new HashMap<Integer, BanditProb>();
 		for (int i = 0; i < probs.length; i++) {
-			banditList.add(new BanditBernoulli(probs[i]));
+			banditList.put(i, new BanditBernoulli(probs[i]));
 		}
 		return banditList;
 	}
