@@ -1,17 +1,18 @@
 ﻿package bandittest;
 
-import bandit.*;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.ArrayList;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import bandit.Agent;
+import bandit.AgentUCBVariance;
 
 public class Tester {
-	static final String DEFALT_FOLDER = "C:\\Users\\shuhei\\Documents\\Bandit\\";
+	static final String DEFALT_FOLDER = "result\\";
 	public boolean running = true;
 	String rewardFileName, regretFileName, accuracyFileName;
 	String dateName, dirName;
@@ -72,7 +73,7 @@ public class Tester {
 
 		try {
 			File newDir = new File(dirName);
-			newDir.mkdir();
+			newDir.mkdirs();
 			File rewardData = new File(dirName + "\\" + rewardFileName + "reward");
 			FileWriter reward = new FileWriter(rewardData);
 			File regretData = new File(dirName + "\\" + regretFileName + "regret");
