@@ -37,7 +37,7 @@ public class TesterFrame extends JFrame implements ActionListener {
 	public TesterFrame() {
 		setTitle("Tester");
 		setLayout(new GridLayout(8, 1));
-		setSize(350, 400);
+		setSize(480, 500);
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);//×を押したらウィンドウを閉じる
 
@@ -85,7 +85,7 @@ public class TesterFrame extends JFrame implements ActionListener {
 
 		trialPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		trialLabel = new JLabel("Num of Trial");
-		trialField = new JTextField(8);
+		trialField = new JTextField("100000", 8);
 		trialField.setActionCommand("TRIAL");
 		trialField.addActionListener(this);
 		trialPanel.add(trialLabel);
@@ -103,7 +103,7 @@ public class TesterFrame extends JFrame implements ActionListener {
 
 		probPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		probLabel = new JLabel("Distribution of Bandits");
-		probField = new JTextField(50);
+		probField = new JTextField(Double.toString(DEFALT_PROBS[0]) + " " + Double.toString(DEFALT_PROBS[1]),50);
 		probField.setActionCommand("PROB");
 		probField.addActionListener(this);
 		probPanel.add(probLabel);
